@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ApplicationPackage 
+    SchemaVersion="1.0" 
+    AutodeskProduct="AutoCAD" 
+    Name="CAD Auto CloudNote" 
+    Description="CAD 云线与批注工具" 
+    AppVersion="0.1.0" 
+    Author="Mr.yang" 
+    ProductCode="{B7A1C2D3-4E5F-6789-ABCD-EF0123456789}" 
+    UpgradeCode="{C8B2D3E4-5F6A-7890-BCDE-F0123456789A}"
+    Icon="./icon.ico">
+  
+  <CompanyDetails Name="InkVerse" />
+  
+  <!-- AutoCAD 2027 (.NET 10.0) -->
+  <Components Description="AutoCAD 2027 Parts">
+    <RuntimeRequirements OS="Win64" Platform="AutoCAD*" SeriesMin="R26.0" SeriesMax="R27.0" />
+    <ComponentEntry 
+        AppName="CadAutoCloudNote_Net10" 
+        ModuleName="./Contents/Net10.0/CadAutoCloudNote_R27.dll" 
+        AppDescription="CAD Auto CloudNote for AutoCAD 2027" 
+        LoadOnAutoCADStartup="True">
+      <Commands GroupName="CNOTE_COMMANDS">
+        <Command Local="CNOTE" Global="CNOTE" />
+        <Command Local="CN" Global="CN" />
+        <Command Local="INKNOTE" Global="INKNOTE" />
+        <Command Local="CNP" Global="CNP" />
+        <Command Local="CNOTEPANEL" Global="CNOTEPANEL" />
+        <Command Local="CNS" Global="CNS" />
+        <Command Local="CNOTESET" Global="CNOTESET" />
+      </Commands>
+    </ComponentEntry>
+  </Components>
+
+  <!-- AutoCAD 2025 ~ 2026 (.NET 8.0) -->
+  <Components Description="AutoCAD 2025-2026 Parts">
+    <RuntimeRequirements OS="Win64" Platform="AutoCAD*" SeriesMin="R25.0" SeriesMax="R26.0" />
+    <ComponentEntry 
+        AppName="CadAutoCloudNote_Net8" 
+        ModuleName="./Contents/Net8.0/CadAutoCloudNote_R25.dll" 
+        AppDescription="CAD Auto CloudNote for AutoCAD 2025-2026" 
+        LoadOnAutoCADStartup="True">
+      <Commands GroupName="CNOTE_COMMANDS">
+        <Command Local="CNOTE" Global="CNOTE" />
+        <Command Local="CN" Global="CN" />
+        <Command Local="INKNOTE" Global="INKNOTE" />
+        <Command Local="CNP" Global="CNP" />
+        <Command Local="CNOTEPANEL" Global="CNOTEPANEL" />
+        <Command Local="CNS" Global="CNS" />
+        <Command Local="CNOTESET" Global="CNOTESET" />
+      </Commands>
+    </ComponentEntry>
+  </Components>
+
+  <!-- AutoCAD 2021 ~ 2024 (.NET Framework 4.8) -->
+  <Components Description="AutoCAD 2021-2024 Parts">
+    <RuntimeRequirements OS="Win64" Platform="AutoCAD*" SeriesMin="R24.0" SeriesMax="R24.3" />
+    <ComponentEntry 
+        AppName="CadAutoCloudNote_Net48" 
+        ModuleName="./Contents/Net48/CadAutoCloudNote_R24.dll" 
+        AppDescription="CAD Auto CloudNote for AutoCAD 2021-2024" 
+        LoadOnAutoCADStartup="True">
+      <Commands GroupName="CNOTE_COMMANDS">
+        <Command Local="CNOTE" Global="CNOTE" />
+        <Command Local="CN" Global="CN" />
+        <Command Local="INKNOTE" Global="INKNOTE" />
+        <Command Local="CNP" Global="CNP" />
+        <Command Local="CNOTEPANEL" Global="CNOTEPANEL" />
+        <Command Local="CNS" Global="CNS" />
+        <Command Local="CNOTESET" Global="CNOTESET" />
+      </Commands>
+    </ComponentEntry>
+  </Components>
+
+  <!-- AutoCAD 2014 ~ 2020 (.NET Framework 4.5/4.8) -->
+  <Components Description="AutoCAD 2014-2020 Parts">
+    <RuntimeRequirements OS="Win64" Platform="AutoCAD*" SeriesMin="R19.1" SeriesMax="R23.1" />
+    <ComponentEntry 
+        AppName="CadAutoCloudNote_Net45" 
+        ModuleName="./Contents/Net45/CadAutoCloudNote_R19.dll" 
+        AppDescription="CAD Auto CloudNote for AutoCAD 2014-2020" 
+        LoadOnAutoCADStartup="True">
+      <Commands GroupName="CNOTE_COMMANDS">
+        <Command Local="CNOTE" Global="CNOTE" />
+        <Command Local="CN" Global="CN" />
+        <Command Local="INKNOTE" Global="INKNOTE" />
+        <Command Local="CNP" Global="CNP" />
+        <Command Local="CNOTEPANEL" Global="CNOTEPANEL" />
+        <Command Local="CNS" Global="CNS" />
+        <Command Local="CNOTESET" Global="CNOTESET" />
+      </Commands>
+    </ComponentEntry>
+  </Components>
+</ApplicationPackage>

@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <HasSharedItems>true</HasSharedItems>
+    <SharedGUID>{E6F7A8B9-C0D1-4E2F-A3B4-C5D6E7F8A9B0}</SharedGUID>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)AppConstants.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)PluginMain.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Commands.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Protocols\NoteLifecycleState.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Protocols\CapacityPolicy.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Config\NoteSettings.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Config\ConfigManager.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Models\CloudEntity.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Models\TextEntity.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Models\NoteReply.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Models\AuditEntry.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Models\ModificationOrigin.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Models\NoteRecord.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Models\DrawingInstance.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Models\ReviewPackageManifest.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Models\BatchReviewSummary.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Models\SemanticSearchConfig.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Interfaces\INoteRepository.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Interfaces\IXDataAccessor.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Interfaces\ICloudDrawer.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Interfaces\INoteUIProvider.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Interfaces\ICadPlatformAdapter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Interfaces\IUpdateChecker.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Helpers\XDataHelper.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Helpers\XRecordHelper.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Helpers\ScaleHelper.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Helpers\IconHelper.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Reactors\DocumentState.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Reactors\PendingTask.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Reactors\PendingTaskConflictResolver.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Reactors\CloneDetection.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Reactors\ReactorManager.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Services\Logger.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Services\ValidationService.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Services\AuditService.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Services\TianzhengScaleHelper.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Services\NoteService.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Services\ReplyService.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Services\ExportService.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Services\SummaryTableService.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Services\KnowledgeBaseService.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Services\DefaultKnowledgeData.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Services\SemanticSearchService.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Services\CompareLinkService.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Services\ReviewPackageService.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Services\BatchReviewService.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Services\MigrationService.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Services\UpdateChecker.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Services\CurveToCloudService.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Services\RapidPhraseService.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Services\ProjectTemplateService.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Services\HelpService.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Jigs\CloudRectJig.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Jigs\PolygonCloudJig.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Jigs\FreehandCloudJig.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Jigs\LeaderPlacementJig.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UI.WinForm\CadWinFormMessageBox.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UI.WinForm\ConfigForm.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UI.WinForm\NoteEditForm.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UI.WinForm\NoteReplyForm.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UI.WinForm\NotePaletteControl.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UI.WinForm\PaletteManager.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UI\NoteUIProvider.cs" />
+  </ItemGroup>
+  <ItemGroup Condition="'$(UseWPF)' == 'true'">
+    <Page Include="$(MSBuildThisFileDirectory)UI.Wpf\CadMessageBox.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Compile Include="$(MSBuildThisFileDirectory)UI.Wpf\CadMessageBox.xaml.cs">
+      <DependentUpon>CadMessageBox.xaml</DependentUpon>
+    </Compile>
+    <Page Include="$(MSBuildThisFileDirectory)UI.Wpf\ConfigWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Compile Include="$(MSBuildThisFileDirectory)UI.Wpf\ConfigWindow.xaml.cs">
+      <DependentUpon>ConfigWindow.xaml</DependentUpon>
+    </Compile>
+    <Page Include="$(MSBuildThisFileDirectory)UI.Wpf\NoteEditDialog.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Compile Include="$(MSBuildThisFileDirectory)UI.Wpf\NoteEditDialog.xaml.cs">
+      <DependentUpon>NoteEditDialog.xaml</DependentUpon>
+    </Compile>
+    <Page Include="$(MSBuildThisFileDirectory)UI.Wpf\NoteReplyDialog.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Compile Include="$(MSBuildThisFileDirectory)UI.Wpf\NoteReplyDialog.xaml.cs">
+      <DependentUpon>NoteReplyDialog.xaml</DependentUpon>
+    </Compile>
+    <Page Include="$(MSBuildThisFileDirectory)UI.Wpf\NotePaletteControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Compile Include="$(MSBuildThisFileDirectory)UI.Wpf\NotePaletteControl.xaml.cs">
+      <DependentUpon>NotePaletteControl.xaml</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\icon.ico" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\icon.png" />
+    <None Include="$(MSBuildThisFileDirectory)Resources\icon.ico">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Visible>false</Visible>
+    </None>
+    <None Include="$(MSBuildThisFileDirectory)Resources\icon.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Visible>false</Visible>
+    </None>
+  </ItemGroup>
+</Project>

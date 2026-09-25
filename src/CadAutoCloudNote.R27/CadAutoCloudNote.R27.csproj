@@ -1,0 +1,42 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net10.0-windows</TargetFramework>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <RootNamespace>CadAutoCloudNote.R27</RootNamespace>
+    <AssemblyName>CadAutoCloudNote_R27</AssemblyName>
+    
+    <OutputPath>..\..\build\R27\</OutputPath>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <ResolveAssemblyWarnOrErrorOnTargetArchitectureMismatch>None</ResolveAssemblyWarnOrErrorOnTargetArchitectureMismatch>
+    <UseWPF>true</UseWPF>
+    <UseWindowsForms>true</UseWindowsForms>
+    
+    <DefineConstants>$(DefineConstants);CAD_R27;USE_WPF</DefineConstants>
+    <Platforms>AnyCPU;x86;x64</Platforms>
+    <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+    <SatelliteResourceLanguages>en-US;zh-Hans</SatelliteResourceLanguages>
+    <LangVersion>latest</LangVersion>
+    <NoWarn>$(NoWarn);WFO1000;CA1416</NoWarn>
+  </PropertyGroup>
+
+  <Import Project="..\..\CadAutoCloudNote.Core\CadAutoCloudNote.Core.projitems" Label="Shared" />
+
+  <ItemGroup>
+    <Reference Include="AcCoreMgd">
+      <HintPath>..\..\Libs\AutoCAD\Net10.0_2027\AcCoreMgd.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="AcDbMgd">
+      <HintPath>..\..\Libs\AutoCAD\Net10.0_2027\AcDbMgd.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="AcMgd">
+      <HintPath>..\..\Libs\AutoCAD\Net10.0_2027\AcMgd.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="AdWindows">
+      <HintPath>..\..\Libs\AutoCAD\Net10.0_2027\AdWindows.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+  </ItemGroup>
+</Project>

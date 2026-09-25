@@ -1,0 +1,264 @@
+CAD Auto CloudNote/
+    ├── build/
+    │   ├── Installer/
+    │   │   └── CadAutoCloudNote_Setup_v0.1.0.exe
+    │   ├── R17/
+    │   │   └── CadAutoCloudNote_R17.dll
+    │   ├── R18/
+    │   │   └── CadAutoCloudNote_R18.dll
+    │   ├── R19/
+    │   │   ├── CadAutoCloudNote_R19.dll
+    │   │   └── NPOI.dll
+    │   ├── R20/
+    │   │   ├── CadAutoCloudNote_R20.dll
+    │   │   └── NPOI.dll
+    │   ├── R21/
+    │   │   ├── CadAutoCloudNote_R21.dll
+    │   │   └── NPOI.dll
+    │   ├── R22/
+    │   │   ├── CadAutoCloudNote_R22.dll
+    │   │   └── NPOI.dll
+    │   ├── R23/
+    │   │   ├── CadAutoCloudNote_R23.dll
+    │   │   └── NPOI.dll
+    │   ├── R24/
+    │   │   ├── CadAutoCloudNote_R24.dll
+    │   │   ├── Microsoft.ML.OnnxRuntime.dll
+    │   │   ├── NPOI.dll
+    │   │   └── x64/
+    │   │       └── onnxruntime.dll
+    │   ├── R25/
+    │   │   ├── CadAutoCloudNote_R25.deps.json
+    │   │   ├── CadAutoCloudNote_R25.dll
+    │   │   ├── Microsoft.ML.OnnxRuntime.dll
+    │   │   ├── NPOI.dll
+    │   │   └── x64/
+    │   │       └── onnxruntime.dll
+    │   ├── R26/
+    │   │   ├── CadAutoCloudNote_R26.deps.json
+    │   │   ├── CadAutoCloudNote_R26.dll
+    │   │   ├── Microsoft.ML.OnnxRuntime.dll
+    │   │   ├── NPOI.dll
+    │   │   └── x64/
+    │   │       └── onnxruntime.dll
+    │   └── R27/
+    │       ├── CadAutoCloudNote_R27.deps.json
+    │       └── CadAutoCloudNote_R27.dll
+    ├── CadAutoCloudNote.Core/
+    │   ├── AppConstants.cs
+    │   ├── CadAutoCloudNote.Core.md   # CAD Auto CloudNote 核心模块完整技术文档说明
+    │   ├── CadAutoCloudNote.Core.projitems
+    │   ├── CadAutoCloudNote.Core.shproj
+    │   ├── Commands.cs   # pragma warning disable CA1416
+    │   ├── Config/
+    │   │   ├── ConfigManager.cs
+    │   │   └── NoteSettings.cs
+    │   ├── Helpers/
+    │   │   ├── ScaleHelper.cs
+    │   │   ├── XDataHelper.cs
+    │   │   └── XRecordHelper.cs
+    │   ├── Interfaces/
+    │   │   ├── ICadPlatformAdapter.cs
+    │   │   ├── ICloudDrawer.cs
+    │   │   ├── INoteRepository.cs
+    │   │   ├── INoteUIProvider.cs
+    │   │   ├── IUpdateChecker.cs
+    │   │   └── IXDataAccessor.cs
+    │   ├── Jigs/
+    │   │   ├── FreeCloudJig.cs
+    │   │   ├── LeaderPlacementJig.cs
+    │   │   ├── PolygonCloudJig.cs
+    │   │   └── RectCloudJig.cs
+    │   ├── Models/
+    │   │   ├── AuditEntry.cs
+    │   │   ├── BatchReviewSummary.cs
+    │   │   ├── CloudEntity.cs
+    │   │   ├── DrawingInstance.cs
+    │   │   ├── ModificationOrigin.cs
+    │   │   ├── NoteRecord.cs
+    │   │   ├── NoteReply.cs
+    │   │   ├── ReviewPackageManifest.cs
+    │   │   ├── SemanticSearchConfig.cs
+    │   │   └── TextEntity.cs
+    │   ├── PluginMain.cs
+    │   ├── Protocols/
+    │   │   ├── CapacityPolicy.cs
+    │   │   └── NoteLifecycleState.cs
+    │   ├── Reactors/
+    │   │   ├── CloneDetection.cs
+    │   │   ├── DocumentState.cs
+    │   │   ├── PendingTask.cs
+    │   │   ├── PendingTaskConflictResolver.cs
+    │   │   └── ReactorManager.cs
+    │   ├── Resources/
+    │   │   ├── CadAutoCloudNote.cui
+    │   │   ├── CadAutoCloudNote.cuix
+    │   │   ├── icon.ico
+    │   │   └── icon.png
+    │   ├── Services/
+    │   │   ├── AuditService.cs
+    │   │   ├── BatchReviewService.cs
+    │   │   ├── CompareLinkService.cs
+    │   │   ├── CurveToCloudService.cs
+    │   │   ├── DefaultKnowledgeData.cs
+    │   │   ├── ExportService.cs
+    │   │   ├── HelpService.cs
+    │   │   ├── KnowledgeBaseService.cs
+    │   │   ├── Logger.cs
+    │   │   ├── MigrationService.cs
+    │   │   ├── NoteService.cs
+    │   │   ├── ProjectTemplateService.cs
+    │   │   ├── RapidPhraseService.cs
+    │   │   ├── ReplyService.cs
+    │   │   ├── ReviewPackageService.cs
+    │   │   ├── SemanticSearchService.cs
+    │   │   ├── SummaryTableService.cs
+    │   │   ├── TianzhengScaleHelper.cs
+    │   │   ├── UpdateChecker.cs
+    │   │   └── ValidationService.cs
+    │   ├── UI/
+    │   │   └── NoteUIProvider.cs
+    │   ├── UI.WinForm/
+    │   │   ├── ConfigForm.cs
+    │   │   ├── NoteEditForm.cs
+    │   │   ├── NotePaletteControl.cs
+    │   │   └── PaletteManager.cs
+    │   └── UI.Wpf/
+    │       ├── ConfigWindow.xaml
+    │       ├── ConfigWindow.xaml.cs
+    │       ├── NoteEditDialog.xaml
+    │       ├── NoteEditDialog.xaml.cs
+    │       ├── NotePaletteControl.xaml
+    │       └── NotePaletteControl.xaml.cs
+    ├── CadAutoCloudNote.slnx
+    ├── CADAutoCloudNote.bundle/
+    │   ├── Contents/
+    │   └── PackageContents.xml
+    ├── installer/
+    │   ├── CadAutoCloudNote_Installer.iss
+    │   ├── icon.ico
+    │   ├── icon.png
+    │   ├── Readme.html
+    │   └── 文件清单.txt
+    ├── Libs/
+    │   ├── AutoCAD/
+    │   │   ├── Net2.0_2007-2009/
+    │   │   │   ├── acdbmgd.dll
+    │   │   │   └── acmgd.dll
+    │   │   ├── Net3.5_2010-2012/
+    │   │   │   ├── acdbmgd.dll
+    │   │   │   └── acmgd.dll
+    │   │   ├── Net4.0_2013-2014/
+    │   │   │   ├── accoremgd.dll
+    │   │   │   ├── acdbmgd.dll
+    │   │   │   └── acmgd.dll
+    │   │   ├── Net4.5_2015-2016/
+    │   │   │   ├── accoremgd.dll
+    │   │   │   ├── acdbmgd.dll
+    │   │   │   └── acmgd.dll
+    │   │   ├── Net4.6_2017/
+    │   │   │   ├── AcCoreMgd.dll
+    │   │   │   ├── AcDbMgd.dll
+    │   │   │   └── AcMgd.dll
+    │   │   ├── Net4.6_2018/
+    │   │   │   ├── AcCoreMgd.dll
+    │   │   │   ├── AcDbMgd.dll
+    │   │   │   └── AcMgd.dll
+    │   │   ├── Net4.7_2019-2020/
+    │   │   │   ├── AcCoreMgd.dll
+    │   │   │   ├── AcDbMgd.dll
+    │   │   │   ├── AcMgd.dll
+    │   │   │   └── AdWindows.dll
+    │   │   ├── Net4.8_2021-2024/
+    │   │   │   ├── accoremgd.dll
+    │   │   │   ├── acdbmgd.dll
+    │   │   │   ├── acmgd.dll
+    │   │   │   └── AdWindows.dll
+    │   │   ├── Net8.0_2025-2026/
+    │   │   │   ├── AcCoreMgd.dll
+    │   │   │   ├── AcDbMgd.dll
+    │   │   │   ├── AcMgd.dll
+    │   │   │   └── AdWindows.dll
+    │   │   └── Net10.0_2027/
+    │   │       ├── AcCoreMgd.dll
+    │   │       ├── AcDbMgd.dll
+    │   │       └── AcMgd.dll
+    │   └── Dependencies/
+    │       ├── NPOI/
+    │       │   └── NPOI.dll
+    │       └── OnnxRuntime/
+    │           ├── Microsoft.ML.OnnxRuntime.dll
+    │           └── x64/
+    │               └── onnxruntime.dll
+    ├── .github/
+    │   ├── ISSUE_TEMPLATE/
+    │   │   ├── bug_report.md
+    │   │   └── feature_request.md
+    │   └── PULL_REQUEST_TEMPLATE.md
+    ├── .gitattributes
+    ├── .gitignore
+    ├── CODE_OF_CONDUCT.md
+    ├── CONTRIBUTING.md
+    ├── DISCLAIMER.md
+    ├── LICENSE.txt
+    ├── README.md
+    ├── SECURITY.md
+    ├── 云线批注.md
+    ├── 模板/
+    │   ├── 批注-另外7个模板建议.md
+    │   ├── 批注-快捷短语.md
+    │   └── 批注-竣工图模板建议.md
+    ├── TEST/
+    │   ├── CadAutoCloudNote.Tests.csproj
+    │   ├── Program.cs
+    │   ├── README.md
+    │   ├── RunAllTests.ps1
+    │   ├── Test_ConfigAndSettings.cs
+    │   ├── Test_KnowledgeBaseService.cs
+    │   ├── Test_LandingLengthGeometry.cs
+    │   ├── Test_ProjectTemplateService.cs
+    │   ├── Test_RapidPhraseService.cs
+    │   └── Test_UI_UX_Consistency.cs
+    └── src/
+        ├── CadAutoCloudNote.R17/
+        │   ├── CadAutoCloudNote.R17.csproj
+        │   └── Properties/
+        │       └── AssemblyInfo.cs
+        ├── CadAutoCloudNote.R18/
+        │   ├── CadAutoCloudNote.R18.csproj
+        │   └── Properties/
+        │       └── AssemblyInfo.cs
+        ├── CadAutoCloudNote.R19/
+        │   ├── CadAutoCloudNote.R19.csproj
+        │   └── Properties/
+        │       └── AssemblyInfo.cs
+        ├── CadAutoCloudNote.R20/
+        │   ├── CadAutoCloudNote.R20.csproj
+        │   └── Properties/
+        │       └── AssemblyInfo.cs
+        ├── CadAutoCloudNote.R21/
+        │   ├── CadAutoCloudNote.R21.csproj
+        │   └── Properties/
+        │       └── AssemblyInfo.cs
+        ├── CadAutoCloudNote.R22/
+        │   ├── CadAutoCloudNote.R22.csproj
+        │   └── Properties/
+        │       └── AssemblyInfo.cs
+        ├── CadAutoCloudNote.R23/
+        │   ├── CadAutoCloudNote.R23.csproj
+        │   └── Properties/
+        │       └── AssemblyInfo.cs
+        ├── CadAutoCloudNote.R24/
+        │   ├── CadAutoCloudNote.R24.csproj
+        │   └── Properties/
+        │       └── AssemblyInfo.cs
+        ├── CadAutoCloudNote.R25/
+        │   ├── CadAutoCloudNote.R25.csproj
+        │   └── Properties/
+        │       └── AssemblyInfo.cs
+        ├── CadAutoCloudNote.R26/
+        │   ├── CadAutoCloudNote.R26.csproj
+        │   └── Properties/
+        │       └── AssemblyInfo.cs
+        └── CadAutoCloudNote.R27/
+            └── CadAutoCloudNote.R27.csproj

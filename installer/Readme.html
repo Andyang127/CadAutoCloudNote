@@ -1,0 +1,1169 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="CAD 云线批注 (CAD Auto CloudNote) 使用指南与实务手册。涵盖矩形/多边形自适应凸度云线、复合图元、级联安全删除、五大设置板块、等级颜色联动、常用意见词典、图纸健康体检、4+2分片存储及原生Excel/报表导出指南。">
+    <title>CAD 云线批注 (CAD Auto CloudNote) 使用指南与实务手册</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #0369A1;       /* 深海蓝 */
+            --primary-light: #0284C7;       /* 科技天蓝 */
+            --primary-gradient: linear-gradient(135deg, #0284C7 0%, #0369A1 100%);
+            --accent-color: #0EA5E9;        /* 亮蓝强调 */
+            --accent-light: #F0F9FF;        /* 浅蓝背景 */
+            --success-color: #10B981;       /* 绿色/已改 */
+            --warning-color: #F59E0B;       /* 橙黄/待复核 */
+            --danger-color: #EF4444;        /* 红色/待办紧迫 */
+            --bg-color: #F8FAFC;            /* 页面底色 */
+            --text-color: #334155;          /* 正文文字 */
+            --text-dark: #0F172A;           /* 标题深色 */
+            --border-color: #E2E8F0;        /* 边框浅灰 */
+            --card-shadow: 0 4px 20px -2px rgba(15, 23, 42, 0.06), 0 2px 8px -1px rgba(15, 23, 42, 0.04);
+            --transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * { box-sizing: border-box; scroll-behavior: smooth; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", "Microsoft YaHei", sans-serif;
+            line-height: 1.8;
+            color: var(--text-color);
+            background-color: var(--bg-color);
+            margin: 0;
+            padding: 0;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .wrapper {
+            display: flex;
+            max-width: 1360px;
+            margin: 0 auto;
+            padding: 40px 24px;
+            gap: 32px;
+        }
+
+        /* 分级侧边悬浮导航栏 */
+        .sidebar {
+            width: 330px;
+            position: sticky;
+            top: 40px;
+            max-height: calc(100vh - 80px);
+            overflow-y: auto;
+            background: #FFFFFF;
+            border-radius: 14px;
+            padding: 22px;
+            box-shadow: var(--card-shadow);
+            border: 1px solid var(--border-color);
+            flex-shrink: 0;
+        }
+        .sidebar::-webkit-scrollbar { width: 6px; }
+        .sidebar::-webkit-scrollbar-thumb { background: #CBD5E1; border-radius: 3px; }
+
+        .sidebar h4 {
+            margin: 0 0 16px 0;
+            color: var(--text-dark);
+            font-size: 15px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 10px;
+        }
+        .sidebar h4 i { color: var(--primary-light); }
+        .sidebar ul { list-style: none; padding: 0; margin: 0; }
+
+        .toc-level-1 > a {
+            font-weight: 700;
+            color: var(--text-dark);
+            font-size: 13.5px;
+            padding: 8px 10px;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+            transition: var(--transition);
+        }
+        .toc-level-1 > a:hover {
+            background-color: #F1F5F9;
+            color: var(--primary-light);
+        }
+        .toc-level-2 {
+            list-style: none;
+            padding-left: 18px;
+            margin: 2px 0 8px 0;
+            border-left: 2px solid #E2E8F0;
+        }
+        .toc-level-2 a {
+            font-weight: 400;
+            color: #64748B;
+            font-size: 12.5px;
+            padding: 5px 10px;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            text-decoration: none;
+            transition: var(--transition);
+        }
+        .toc-level-2 a:hover {
+            color: var(--primary-light);
+            background-color: #F8FAFC;
+            padding-left: 14px;
+        }
+
+        /* 主内容容器 */
+        .container {
+            flex: 1;
+            background: #FFFFFF;
+            padding: 48px;
+            box-shadow: var(--card-shadow);
+            border-radius: 16px;
+            border: 1px solid var(--border-color);
+            min-width: 0;
+        }
+
+        header {
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 24px;
+            margin-bottom: 36px;
+            position: relative;
+        }
+        .header-top {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 12px;
+        }
+        .brand-badge {
+            background: var(--primary-gradient);
+            color: white;
+            padding: 4px 14px;
+            font-size: 12px;
+            font-weight: 600;
+            border-radius: 20px;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            letter-spacing: 0.5px;
+        }
+        .version-badge {
+            background: #E0F2FE;
+            color: #0369A1;
+            padding: 4px 12px;
+            font-size: 12px;
+            font-weight: 600;
+            border-radius: 20px;
+        }
+        h1 {
+            color: var(--text-dark);
+            margin: 0 0 10px 0;
+            font-size: 28px;
+            font-weight: 800;
+            letter-spacing: -0.02em;
+        }
+        header p {
+            margin: 0;
+            color: #64748B;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        /* 矢量插图与流程图容器 */
+        .diagram-box {
+            background: #F8FAFC;
+            border: 1px solid var(--border-color);
+            border-radius: 14px;
+            padding: 24px;
+            margin: 24px 0;
+            text-align: center;
+        }
+        .diagram-title {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--text-dark);
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        .diagram-svg { max-width: 100%; height: auto; display: block; margin: 0 auto; }
+
+        /* 高亮提示框 */
+        .highlight {
+            background: linear-gradient(to right, #F0F9FF, #F8FAFC);
+            padding: 22px;
+            border-radius: 12px;
+            border-left: 4px solid var(--primary-light);
+            margin: 24px 0;
+            box-shadow: 0 2px 8px rgba(2, 132, 199, 0.05);
+        }
+        .highlight h3 {
+            color: var(--primary-color);
+            margin-top: 0;
+            margin-bottom: 10px;
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: transparent;
+            padding: 0;
+            border: none;
+        }
+        .highlight p { margin: 0 0 8px 0; font-size: 13.5px; color: #475569; }
+        .highlight ul { padding-left: 20px; margin: 0; }
+        .highlight li { font-size: 13px; margin-bottom: 6px; color: #475569; }
+
+        h2 {
+            color: var(--text-dark);
+            margin-top: 44px;
+            margin-bottom: 18px;
+            font-size: 21px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 10px;
+        }
+        h2 i { color: var(--primary-light); font-size: 19px; }
+
+        h3 {
+            color: var(--text-dark);
+            margin-top: 28px;
+            margin-bottom: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: #F8FAFC;
+            padding: 10px 16px;
+            border-radius: 8px;
+            border-left: 3px solid var(--primary-light);
+        }
+        h3 i { color: var(--primary-light); font-size: 15px; }
+
+        p { margin-top: 0; margin-bottom: 12px; color: var(--text-color); font-size: 13.5px; }
+
+        /* 特性卡片网格 */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 16px;
+            margin: 18px 0;
+        }
+        .card {
+            background: #F8FAFC;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 18px;
+            transition: var(--transition);
+        }
+        .card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px -4px rgba(0, 0, 0, 0.07);
+            border-color: #BAE6FD;
+        }
+        .card-icon {
+            width: 38px;
+            height: 38px;
+            border-radius: 8px;
+            background: #E0F2FE;
+            color: var(--primary-light);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            margin-bottom: 12px;
+        }
+        .card h4 { margin: 0 0 6px 0; color: var(--text-dark); font-size: 14.5px; }
+        .card p { margin: 0; font-size: 13px; color: #64748B; line-height: 1.6; }
+
+        /* 状态徽章与流转展示 */
+        .state-flow {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin: 18px 0;
+            padding: 16px;
+            background: #F8FAFC;
+            border-radius: 10px;
+            border: 1px solid var(--border-color);
+        }
+        .state-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 12.5px;
+            font-weight: 700;
+        }
+        .state-draft { background: #F1F5F9; color: #64748B; border: 1px solid #CBD5E1; }
+        .state-pending { background: #FEE2E2; color: #DC2626; border: 1px solid #FCA5A5; }
+        .state-resolved { background: #DCFCE7; color: #16A34A; border: 1px solid #86EFAC; }
+        .state-rejected { background: #FCE7F3; color: #DB2777; border: 1px solid #F9A8D4; }
+        .state-closed { background: #F3F4F6; color: #4B5563; border: 1px solid #D1D5DB; }
+        .state-arrow { color: #94A3B8; font-size: 13px; }
+
+        /* 步骤引导卡片 */
+        .step-box {
+            background: #F8FAFC;
+            border: 1px dashed #CBD5E1;
+            border-radius: 12px;
+            padding: 20px 24px;
+            margin: 18px 0;
+        }
+        .step-title {
+            font-weight: 700;
+            color: var(--primary-color);
+            font-size: 14px;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .step-list { padding-left: 20px; margin: 0; }
+        .step-list li { margin-bottom: 8px; font-size: 13px; color: #475569; }
+
+        /* 命令卡片样式 */
+        .cmd-tag { font-family: Consolas, Monaco, monospace; font-weight: bold; color: var(--primary-color); font-size: 14px; }
+        
+        /* 表格样式 */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 18px 0;
+            border-radius: 10px;
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+        }
+        th, td {
+            padding: 10px 14px;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+            font-size: 13px;
+        }
+        th { background: #F1F5F9; color: var(--text-dark); font-weight: 700; }
+        tr:last-child td { border-bottom: none; }
+        tr:nth-child(even) { background-color: #F8FAFC; }
+
+        .faq-item {
+            margin-bottom: 14px;
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 16px 20px;
+            background: #FFFFFF;
+        }
+        .faq-q {
+            font-weight: 700;
+            color: var(--text-dark);
+            font-size: 14px;
+            margin-bottom: 6px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .faq-q i { color: var(--primary-light); }
+        .faq-a { font-size: 13px; color: #475569; margin: 0; line-height: 1.65; }
+
+        .footer {
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid var(--border-color);
+            text-align: center;
+            color: #64748B;
+            font-size: 12.5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="wrapper">
+        <!-- 分级侧边悬浮目录导航栏 -->
+        <aside class="sidebar">
+            <h4><i class="fa-solid fa-list-ul"></i> 功能导航</h4>
+            <ul>
+                <li class="toc-level-1"><a href="#overview"><i class="fa-solid fa-compass"></i> 1. 系统概览与核心架构</a></li>
+                
+                <li class="toc-level-1">
+                    <a href="#features"><i class="fa-solid fa-bolt"></i> 2. 核心功能套件</a>
+                    <ul class="toc-level-2">
+                        <li><a href="#feat-cloud">2.1 云线绘制与曲线转换</a></li>
+                        <li><a href="#feat-cascade">2.2 复合图元与级联安全</a></li>
+                        <li><a href="#feat-settings">2.3 五大板块与系统架构</a></li>
+                        <li><a href="#feat-rapid">2.4 极速批注与快捷短语库</a></li>
+                        <li><a href="#feat-templates">2.5 9 大工程角色与场景模板</a></li>
+                        <li><a href="#feat-lifecycle">2.6 生命周期状态机与颜色映射</a></li>
+                        <li><a href="#feat-palette">2.7 看板与审核管理</a></li>
+                        <li><a href="#feat-storage">2.8 XRecord 4+2分片与自动分卷</a></li>
+                        <li><a href="#feat-compare">2.9 图纸跨版本比对</a></li>
+                        <li><a href="#feat-kb">2.10 规范知识库与条文检索</a></li>
+                        <li><a href="#feat-export">2.11 Excel与图纸汇总表导出</a></li>
+                        <li><a href="#feat-audit">2.12 链式SHA256防篡改审计</a></li>
+                    </ul>
+                </li>
+
+                <li class="toc-level-1"><a href="#quickstart"><i class="fa-solid fa-play"></i> 3. 五步极速上手指引</a></li>
+                <li class="toc-level-1"><a href="#commands"><i class="fa-solid fa-terminal"></i> 4. 24项业务命令速查表</a></li>
+                <li class="toc-level-1"><a href="#compatibility"><i class="fa-solid fa-desktop"></i> 5. 各版本兼容支持列表</a></li>
+                <li class="toc-level-1"><a href="#faq"><i class="fa-solid fa-circle-question"></i> 6. 常见问题排查 (FAQ)</a></li>
+                <li class="toc-level-1"><a href="#about-author"><i class="fa-solid fa-user-heart"></i> 7. 关于作者与开源交流</a></li>
+            </ul>
+        </aside>
+
+        <!-- 主内容区 -->
+        <main class="container">
+            <header>
+                <div class="header-top">
+                    <span class="brand-badge"><i class="fa-solid fa-cloud"></i> CadAutoCloudNote</span>
+                    <span class="version-badge">v0.1.0 测试版</span>
+                </div>
+                <h1>CAD 云线批注 (CAD Auto CloudNote) 使用指南</h1>
+                <p>
+                    <span><i class="fa-solid fa-code-branch"></i> 架构内核: C# 共享项目 (Shared Project)</span>
+                    <span><i class="fa-solid fa-microchip"></i> 跨代支持: AutoCAD 2007 ~ 2027 (R17 ~ R27 全覆盖)</span>
+                    <span><i class="fa-solid fa-shield-halved"></i> 开源协议: GNU AGPL v3.0</span>
+                </p>
+            </header>
+
+            <!-- 务实项目说明 -->
+            <div class="author-disclaimer" style="background: #F0F9FF; border: 1px solid #BAE6FD; border-left: 4px solid #0284C7; border-radius: 8px; padding: 12px 18px; margin: 18px 0; font-size: 13px; line-height: 1.7; color: #334155;">
+                <i class="fa-solid fa-circle-info" style="color: #0284C7; margin-right: 6px;"></i>
+                <strong>项目说明</strong>：本项目非商业官方软件，是作者在工程一线设计之余，利用个人业余时间出于技术爱好和实际绘图需求编写的开源辅助小工具，免费分享给有需要的施工、设计与校审同行。
+            </div>
+
+
+            <!-- 1. 系统概览与核心架构 -->
+            <section id="overview">
+                <h2><i class="fa-solid fa-compass"></i> 1. 系统概览与核心架构</h2>
+                <div class="highlight">
+                    <h3><i class="fa-solid fa-lightbulb"></i> 为什么选择 CAD Auto CloudNote？</h3>
+                    <p>传统 CAD 审图通常面临<b>“批注零碎、图文脱节、改图难溯、删除留残、严重程度难辨”</b>等顽疾。CAD Auto CloudNote 通过实体级 XData 绑定、DWG 扩展字典（NOD）4+2分片存储、多文档隔离反应器、五大设置板块及严重等级颜色联动，建立严密的数字化审图作业闭环：</p>
+                    <ul>
+                        <li><strong>复合图元与级联删除</strong>：云线、引线、MText 封装在单一事务中，删除任一部分自动级联清除全套图元与字典，杜绝孤儿图元残留。</li>
+                        <li><strong>严重等级颜色联动</strong>：一般(绿)、重要(品红)、紧急(红)自动映射，新建批注自动按等级赋色，出图视觉警示直观分明。</li>
+                        <li><strong>常用审查意见快捷词典</strong>：内置高频工程审查短语，支持即时新增、删除与一键恢复预设，大幅减少重复敲字。</li>
+                        <li><strong>一键图纸健康体检</strong>：深度遍历图纸数据库，自动清理孤儿 XRecord 与无效扩展字典，轻量化压缩图纸存储。</li>
+                        <li><strong>分卷隔离保障稳定</strong>：50 条批注自动分卷隔离机制，单张图纸承载大量批注保障图纸操作稳定流畅。</li>
+                    </ul>
+                </div>
+
+                <!-- 架构管线示意图 -->
+                <div class="diagram-box">
+                    <div class="diagram-title"><i class="fa-solid fa-diagram-project"></i> CAD Auto CloudNote 全业务流转与底层数据拓扑</div>
+                    <svg class="diagram-svg" viewBox="0 0 860 260" width="860" height="260" xmlns="http://www.w3.org/2000/svg">
+                        <defs>
+                            <linearGradient id="gBlueCloud" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" stop-color="#0284C7"/>
+                                <stop offset="100%" stop-color="#0369A1"/>
+                            </linearGradient>
+                            <linearGradient id="gGreenCloud" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" stop-color="#10B981"/>
+                                <stop offset="100%" stop-color="#059669"/>
+                            </linearGradient>
+                            <linearGradient id="gOrangeCloud" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" stop-color="#F59E0B"/>
+                                <stop offset="100%" stop-color="#D97706"/>
+                            </linearGradient>
+                            <filter id="dropShadow" x="-10%" y="-10%" width="120%" height="120%">
+                                <feDropShadow dx="0" dy="4" stdDeviation="4" flood-color="#0F172A" flood-opacity="0.08"/>
+                            </filter>
+                        </defs>
+
+                        <!-- 卡片 1: 交互生成 -->
+                        <g filter="url(#dropShadow)">
+                            <rect x="20" y="30" width="240" height="200" rx="12" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1.5"/>
+                            <rect x="35" y="45" width="210" height="38" rx="8" fill="url(#gBlueCloud)"/>
+                            <text x="140" y="69" fill="#FFFFFF" font-size="13.5" font-weight="bold" text-anchor="middle">1. 交互绘制与图元绑定</text>
+                            <text x="45" y="112" fill="#334155" font-size="12">▶ 矩形 / 多边形自适应凸弧云线</text>
+                            <text x="45" y="136" fill="#334155" font-size="12">▶ 折角引线 + MText 文字</text>
+                            <text x="45" y="160" fill="#334155" font-size="12">▶ 严重等级颜色联动映射</text>
+                            <text x="45" y="184" fill="#334155" font-size="12">▶ 视口 / 天正比例尺度自适应</text>
+                        </g>
+
+                        <!-- 箭头 1 -->
+                        <path d="M 265 130 L 305 130" fill="none" stroke="#0284C7" stroke-width="3"/>
+                        <polygon points="305,125 317,130 305,135" fill="#0284C7"/>
+
+                        <!-- 卡片 2: 反应器与事务隔离 -->
+                        <g filter="url(#dropShadow)">
+                            <rect x="320" y="30" width="240" height="200" rx="12" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1.5"/>
+                            <rect x="335" y="45" width="210" height="38" rx="8" fill="url(#gOrangeCloud)"/>
+                            <text x="440" y="69" fill="#FFFFFF" font-size="13.5" font-weight="bold" text-anchor="middle">2. 反应器与安全闭环</text>
+                            <text x="345" y="112" fill="#334155" font-size="12">▶ 级联安全删除 (Cascade Erase)</text>
+                            <text x="345" y="136" fill="#334155" font-size="12">▶ Application.Idle 夹点消除残影</text>
+                            <text x="345" y="160" fill="#334155" font-size="12">▶ COPY/EXPLODE 自动克隆分流</text>
+                            <text x="345" y="184" fill="#334155" font-size="12">▶ 增删改消解矩阵 (Conflict Matrix)</text>
+                        </g>
+
+                        <!-- 箭头 2 -->
+                        <path d="M 565 130 L 605 130" fill="none" stroke="#0284C7" stroke-width="3"/>
+                        <polygon points="605,125 617,130 605,135" fill="#0284C7"/>
+
+                        <!-- 卡片 3: 4+2分片与外部输出 -->
+                        <g filter="url(#dropShadow)">
+                            <rect x="620" y="30" width="220" height="200" rx="12" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1.5"/>
+                            <rect x="635" y="45" width="190" height="38" rx="8" fill="url(#gGreenCloud)"/>
+                            <text x="730" y="69" fill="#FFFFFF" font-size="13.5" font-weight="bold" text-anchor="middle">3. 存储分片与协同输出</text>
+                            <text x="645" y="112" fill="#334155" font-size="12">▶ 4+2 分片 ResultBuffer 编解码</text>
+                            <text x="645" y="136" fill="#334155" font-size="12">▶ 50条自动分卷字典隔离</text>
+                            <text x="645" y="160" fill="#334155" font-size="12">▶ 图纸批注健康体检与轻量化</text>
+                            <text x="645" y="184" fill="#334155" font-size="12">▶ 原生 Excel / CSV / Table 导出</text>
+                        </g>
+                    </svg>
+                </div>
+            </section>
+
+            <!-- 2. 核心功能套件 -->
+            <section id="features">
+                <h2><i class="fa-solid fa-bolt"></i> 2. 核心功能套件</h2>
+
+                <!-- 2.1 三大云线绘制与曲线转换 -->
+                <h3 id="feat-cloud"><i class="fa-solid fa-cloud"></i> 2.1 三大云线绘制与曲线转换 (`CNOTE` / `CN` / `CNCV` / `CNAC`)</h3>
+                <p>插件提供多种贴合工程实际的云线绘制与重构方式，自动基于图纸标注比例（`DIMSCALE`）与天正出图比例换算适宜弧长：</p>
+                <div class="grid">
+                    <div class="card">
+                        <div class="card-icon"><i class="fa-solid fa-vector-square"></i></div>
+                        <h4>矩形云线 (`RectCloudJig`)</h4>
+                        <p>交互指定对角两个角点，系统根据步长在长宽方向整除分布圆弧，拐角对称平顺闭合，无破碎残弧。</p>
+                    </div>
+                    <div class="card">
+                        <div class="card-icon"><i class="fa-solid fa-draw-polygon"></i></div>
+                        <h4>多边形云线 (`PolygonCloudJig`)</h4>
+                        <p>支持连续拾取任意顶点多边形。内置 <strong>Shoelace 鞋带算法</strong> 实时计算有向代数面积，自动判别顺时针/逆时针走向与外法线方向，确保凹凸多边形圆弧始终饱满外凸，杜绝倒翻破面。</p>
+                    </div>
+                    <div class="card">
+                        <div class="card-icon"><i class="fa-solid fa-pen-nib"></i></div>
+                        <h4>书法笔锋变截面</h4>
+                        <p>支持起笔细、落笔粗变截面毛笔笔锋渲染，赋予云线工业工程手绘质感。</p>
+                    </div>
+                    <div class="card">
+                        <div class="card-icon"><i class="fa-solid fa-arrows-rotate"></i></div>
+                        <h4>对象转云线 (`CNCV` / `CNCONVERT`)</h4>
+                        <p>选取已有 Polyline、Circle、Ellipse 等曲线，原地转换为标准工程云线批注。</p>
+                    </div>
+                    <div class="card">
+                        <div class="card-icon"><i class="fa-solid fa-circle-plus"></i></div>
+                        <h4>追加云线 (`CNAC` / `CNADDCLOUD`)</h4>
+                        <p>为已有批注追加副云线框与分枝引线，实现“一处审查文字、覆盖多处图面隐患”。</p>
+                    </div>
+                </div>
+
+                <!-- 2.2 复合图元与级联安全删除 -->
+                <h3 id="feat-cascade"><i class="fa-solid fa-link-slash"></i> 2.2 图文成套一体化绑定、级联安全删除与夹点拖拽实时同步</h3>
+                <p>批注由云线多段线、折角引线、箭头三角形多段线与多行文字组合构成，系统在底层构建了完备的响应式联动保护：</p>
+                <div class="grid">
+                    <div class="card">
+                        <div class="card-icon"><i class="fa-solid fa-trash-can"></i></div>
+                        <h4>级联安全删除 (Cascade Erase)</h4>
+                        <p>无论工程师使用 AutoCAD 原生 Erase 删除了文字、引线还是不小心删除了箭头三角形，反应器均能自动捕获并级联清理整条批注绑定的所有关联图元，同步从 NOD 字典与右侧管理看板中安全移除，绝不在图面上留下无主死引线。</p>
+                    </div>
+                    <div class="card">
+                        <div class="card-icon"><i class="fa-solid fa-hand-pointer"></i></div>
+                        <h4>夹点拖拽实时同步 (Application.Idle)</h4>
+                        <p>针对 AutoCAD 夹点编辑（Grip Edit）在拖拽文字或引线端头时不触发 <code>CommandEnded</code> 的行业痛点，系统挂载 <code>Application.Idle</code> 线程空闲探测，拖拽松开瞬间精准对齐，消除视觉残影与坐标漂移。</p>
+                    </div>
+                </div>
+
+                <!-- 2.3 五大板块与系统架构 -->
+                <h3 id="feat-settings"><i class="fa-solid fa-sliders"></i> 2.3 全局设置五大板块与实用联动机制 (`CNS` / `CNOTESET`)</h3>
+                <p>全局参数设置视窗采用全新的<strong>五大板块</strong>架构设计，WPF 与 WinForms 均支持<strong>深色工程护眼与浅色明亮双色自适应</strong>（自动跟随宿主 <code>COLORTHEME</code> 变量），保持 100% 结构与体验对等：</p>
+
+                <div class="diagram-box">
+                    <div class="diagram-title"><i class="fa-solid fa-window-restore"></i> 全局设置五大板块架构</div>
+                    <svg class="diagram-svg" viewBox="0 0 840 180" width="840" height="180" xmlns="http://www.w3.org/2000/svg">
+                        <!-- 板块 1 -->
+                        <rect x="10" y="20" width="155" height="140" rx="8" fill="#FFFFFF" stroke="#0284C7" stroke-width="2"/>
+                        <rect x="10" y="20" width="155" height="32" rx="6" fill="#0284C7"/>
+                        <text x="87" y="42" fill="#FFFFFF" font-size="11.5" font-weight="bold" text-anchor="middle">1. 对象与规则</text>
+                        <text x="18" y="70" fill="#0284C7" font-weight="bold" font-size="10.5">★ 9套工程角色场景模板</text>
+                        <text x="18" y="90" fill="#334155" font-size="10.5">▶ 规则联动/图层颜色绑定</text>
+                        <text x="18" y="112" fill="#334155" font-size="10.5">▶ 专属高频审查意见库</text>
+                        <text x="18" y="134" fill="#0284C7" font-weight="bold" font-size="10.5">★ 角色台账/图纸健康体检</text>
+
+                        <!-- 板块 2 -->
+                        <rect x="175" y="20" width="155" height="140" rx="8" fill="#FFFFFF" stroke="#0EA5E9" stroke-width="2"/>
+                        <rect x="175" y="20" width="155" height="32" rx="6" fill="#0EA5E9"/>
+                        <text x="252" y="42" fill="#FFFFFF" font-size="11.5" font-weight="bold" text-anchor="middle">2. 绘图与样式</text>
+                        <text x="183" y="70" fill="#334155" font-size="10.5">▶ 云线几何/笔锋/线宽</text>
+                        <text x="183" y="90" fill="#334155" font-size="10.5">▶ 文字高度/引线/编号</text>
+                        <text x="183" y="112" fill="#0EA5E9" font-weight="bold" font-size="10.5">★ 严重等级颜色联动</text>
+                        <text x="183" y="134" fill="#334155" font-size="10.5">▶ 矢量动态渲染预览卡</text>
+
+                        <!-- 板块 3 -->
+                        <rect x="340" y="20" width="155" height="140" rx="8" fill="#FFFFFF" stroke="#10B981" stroke-width="2"/>
+                        <rect x="340" y="20" width="155" height="32" rx="6" fill="#10B981"/>
+                        <text x="417" y="42" fill="#FFFFFF" font-size="11.5" font-weight="bold" text-anchor="middle">3. 极速与短语</text>
+                        <text x="348" y="70" fill="#334155" font-size="10.5">▶ 免弹窗快速成图策略</text>
+                        <text x="348" y="90" fill="#10B981" font-weight="bold" font-size="10.5">★ 8大黄金短语直选(1-8)</text>
+                        <text x="348" y="112" fill="#334155" font-size="10.5">▶ 命令行单键切词 (S/T)</text>
+                        <text x="348" y="134" fill="#334155" font-size="10.5">▶ 常用短语分类增删管理</text>
+
+                        <!-- 板块 4 -->
+                        <rect x="505" y="20" width="155" height="140" rx="8" fill="#FFFFFF" stroke="#F59E0B" stroke-width="2"/>
+                        <rect x="505" y="20" width="155" height="32" rx="6" fill="#F59E0B"/>
+                        <text x="582" y="42" fill="#FFFFFF" font-size="11.5" font-weight="bold" text-anchor="middle">4. 规范知识库</text>
+                        <text x="513" y="70" fill="#334155" font-size="10.5">▶ 国家强制性工程规范库</text>
+                        <text x="513" y="90" fill="#334155" font-size="10.5">▶ 条文快速模糊匹配</text>
+                        <text x="513" y="112" fill="#334155" font-size="10.5">▶ 自动附加规范条文编号</text>
+                        <text x="513" y="134" fill="#334155" font-size="10.5">▶ 规范条目增删与维护</text>
+
+                        <!-- 板块 5 -->
+                        <rect x="670" y="20" width="160" height="140" rx="8" fill="#FFFFFF" stroke="#8B5CF6" stroke-width="2"/>
+                        <rect x="670" y="20" width="160" height="32" rx="6" fill="#8B5CF6"/>
+                        <text x="750" y="42" fill="#FFFFFF" font-size="11.5" font-weight="bold" text-anchor="middle">5. 快捷与系统</text>
+                        <text x="678" y="70" fill="#334155" font-size="10.5">▶ 常用命令一键速查执行</text>
+                        <text x="678" y="90" fill="#8B5CF6" font-weight="bold" font-size="10.5">★ 标题与底栏帮助直达(F1)</text>
+                        <text x="678" y="112" fill="#334155" font-size="10.5">▶ 系统默认值安全恢复</text>
+                        <text x="678" y="134" fill="#334155" font-size="10.5">▶ 运行日志与环境诊断</text>
+                    </svg>
+                </div>
+
+                <div class="grid">
+                    <div class="card">
+                        <div class="card-icon"><i class="fa-solid fa-palette"></i></div>
+                        <h4>【实用联动】严重等级与颜色联动</h4>
+                        <p>开启联动后，新建批注时根据所选优先级（一般/重要/紧急）自动赋予对应的云线颜色（默认：一般=绿 3、重要=洋红 6、紧急=红 1），省去手动换层换色的繁琐，图面警示层级清晰。</p>
+                    </div>
+                    <div class="card">
+                        <div class="card-icon"><i class="fa-solid fa-broom"></i></div>
+                        <h4>【图纸维护】图纸批注健康体检与清理</h4>
+                        <p>一键深度扫描当前图纸的 NOD 命名对象字典，彻底清理无实体关联的孤儿 XRecord、幽灵扩展字典与失效句柄引用，减小 DWG 图纸体积并净化图纸环境。</p>
+                    </div>
+                    <div class="card">
+                        <div class="card-icon"><i class="fa-solid fa-circle-question"></i></div>
+                        <h4>【便捷交互】标题栏与底栏双“帮助”直达</h4>
+                        <p>设置视窗顶部标题栏右上角（关闭按钮左侧）提供标准 <code>?</code> 按钮，底栏配有【帮助】按钮与【📖 使用帮助】超链接，支持 <code>F1</code> 键一键唤醒本地离线手册；底栏【恢复默认】严格执行<strong>恢复系统默认值</strong>。</p>
+                    </div>
+                </div>
+
+                <!-- 2.4 极速免弹窗批注与快捷短语库 -->
+                <h3 id="feat-rapid"><i class="fa-solid fa-bolt-lightning"></i> 2.4 极速批注与上下双行标注排布 (`CNQ` / `NOTEQUICK`)</h3>
+                <p>在工程实际快速校审时，若每画一个云线都弹窗打断，审图思路极易被中断。本工具提供了高效率的免弹窗快速落图机制：</p>
+                <div class="grid">
+                    <div class="card">
+                        <div class="card-icon"><i class="fa-solid fa-arrows-up-down"></i></div>
+                        <h4>上下双行规范排布</h4>
+                        <p>采用托线（Shelf line）上下双层结构：上方呈现清晰加粗标题（如“【1】 待修改”），下方呈现轻量日期戳。折弯拐角处自动生成等边实心小三角形标记，几何重心严格重合于折点。</p>
+                    </div>
+                    <div class="card">
+                        <div class="card-icon"><i class="fa-solid fa-stopwatch-20"></i></div>
+                        <h4>免弹窗快速放置</h4>
+                        <p>执行 <code>CNQ</code>（或底栏勾选急速批注），框选云线并点选引线后，系统直接以预设短语秒级生成批注，零弹窗打扰，鼠标连贯拖拽落图。</p>
+                    </div>
+                    <div class="card">
+                        <div class="card-icon"><i class="fa-solid fa-keyboard"></i></div>
+                        <h4>S 键快速切词 (1-8 黄金短语直选)</h4>
+                        <p>引线拖拽时按 <strong>S 键</strong>，命令栏与动态输入直接展开与设置 UI 完全对齐的 <strong>8 大黄金精炼短语</strong>，按数字键 1~8 秒切；按 <strong>T 键</strong> 即时输入自定义内容；空格或回车直接确认！</p>
+                    </div>
+                </div>
+
+                <!-- 8大黄金短语与命令行/动态输入图文并茂呈现 -->
+                <div style="background: #0F172A; border: 1px solid #334155; border-radius: 10px; padding: 18px 22px; margin: 18px 0; color: #F8FAFC; box-shadow: 0 4px 16px rgba(15,23,42,0.15);">
+                    <div style="font-size: 13.5px; font-weight: 700; color: #38BDF8; margin-bottom: 12px; display: flex; align-items: center; gap: 8px;">
+                        <i class="fa-solid fa-terminal"></i> 命令行提示与动态输入 (DYNMODE) 
+                    </div>
+
+                    <!-- 命令行效果模拟 -->
+                    <div style="margin-bottom: 14px;">
+                        <div style="font-size: 12px; color: #94A3B8; margin-bottom: 5px;">▶ AutoCAD 命令行提示（支持鼠标直接点击高亮项）：</div>
+                        <div style="background: #1E293B; border-radius: 6px; padding: 10px 14px; font-family: Consolas, 'Courier New', monospace; font-size: 12px; line-height: 1.6; color: #E2E8F0; overflow-x: auto;">
+                            请选择短语 [<span style="color:#38BDF8; font-weight: bold;">1-待修改(1)</span>/<span style="color:#38BDF8; font-weight: bold;">2-请核实(2)</span>/<span style="color:#38BDF8; font-weight: bold;">3-请补充(3)</span>/<span style="color:#38BDF8; font-weight: bold;">4-请复核(4)</span>/<span style="color:#38BDF8; font-weight: bold;">5-待确认(5)</span>/<span style="color:#38BDF8; font-weight: bold;">6-核对有误(6)</span>/<span style="color:#38BDF8; font-weight: bold;">7-信息不全(7)</span>/<span style="color:#38BDF8; font-weight: bold;">8-做法不明(8)</span>/<span style="color:#F59E0B; font-weight: bold;">自定义(T)</span>]:
+                        </div>
+                    </div>
+
+                    <!-- 动态输入下拉菜单效果模拟 -->
+                    <div>
+                        <div style="font-size: 12px; color: #94A3B8; margin-bottom: 5px;">▶ 动态输入下拉菜单（引线拖拽按 S 触发，按键盘 ↓ 方向键展开或鼠标点选）：</div>
+                        <div style="display: inline-block; background: #1E293B; border: 1px solid #475569; border-radius: 6px; padding: 4px 0; font-size: 12px; min-width: 200px; box-shadow: 0 6px 16px rgba(0,0,0,0.5); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
+                            <div style="padding: 4px 16px; background: #0284C7; color: #FFFFFF; font-weight: 600;"><i class="fa-solid fa-check" style="margin-right: 6px; font-size: 10px;"></i>1-待修改</div>
+                            <div style="padding: 4px 16px; color: #CBD5E1;">2-请核实</div>
+                            <div style="padding: 4px 16px; color: #CBD5E1;">3-请补充</div>
+                            <div style="padding: 4px 16px; color: #CBD5E1;">4-请复核</div>
+                            <div style="padding: 4px 16px; color: #CBD5E1;">5-待确认</div>
+                            <div style="padding: 4px 16px; color: #CBD5E1;">6-核对有误</div>
+                            <div style="padding: 4px 16px; color: #CBD5E1;">7-信息不全</div>
+                            <div style="padding: 4px 16px; color: #CBD5E1;">8-做法不明</div>
+                            <div style="padding: 4px 16px; color: #F59E0B; border-top: 1px solid #334155; font-weight: 600;">自定义(T)</div>
+                        </div>
+                    </div>
+
+                    <div style="margin-top: 12px; font-size: 12px; color: #94A3B8; line-height: 1.6;">
+                        💡 <strong>快捷批注</strong>：此处 1~8 短语与全局设置 UI 中的【急速批注默认成图短语】下拉列表完全一致。词条全部精炼为 3~4 字高频定性词，绝不在命令行中塞入繁琐长句，排版规整不截断，键盘按数字 1~8 即可盲打秒切。
+                    </div>
+                </div>
+
+                <div class="step-box" style="margin-top: 14px;">
+                    <div class="step-title"><i class="fa-solid fa-shield-halved"></i> 标题与审查意见内容解耦保护</div>
+                    <p style="font-size: 13px; color: #475569; margin: 0;">
+                        在以往图纸标注中，常见标题被长篇审查正文冲刷覆盖的问题。本工具在底层严格做了字段解耦：无论标题选择默认的“待修改”还是手动输入自定义标题，第一行均完整保留呈现；详细意见内容独立排版在下方或扩展字典中，绝不发生文字冲突或内容丢失。
+                    </p>
+                </div>
+
+                <!-- 2.5 9大工程角色与场景模板引擎 -->
+                <h3 id="feat-templates"><i class="fa-solid fa-cubes"></i> 2.5 9 大工程角色与场景模板引擎与专有清单导出</h3>
+                <p>针对建筑工程从初步设计、施工图审查、图纸会审、深化交底到竣工交付的全生命周期，系统内置 9 套标准工程角色与场景模板：</p>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>模板标识</th>
+                            <th>角色定位 / 工程场景</th>
+                            <th>预设图层</th>
+                            <th>序号前缀</th>
+                            <th>默认颜色</th>
+                            <th>打印状态</th>
+                            <th>专有差异清单报表</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td><code>tpl_general</code></td><td>通用工程 (日常设计与综合校对)</td><td>CAD_NOTE_CLOUD</td><td>【</td><td>红色 (1)</td><td>可打印</td><td>标准工程批注汇总表</td></tr>
+                        <tr><td><code>tpl_audit</code></td><td>施工审图 (审图机构/审查专家)</td><td>AUDIT-NOTE</td><td>AUD-</td><td>洋红 (6)</td><td>可打印</td><td>《施工图审查意见逐条销项清单》</td></tr>
+                        <tr><td><code>tpl_check</code></td><td>内部校审 (设计院三校两审)</td><td>INTERNAL-CHECK-NOTE</td><td>CHK-</td><td>橙色 (30)</td><td>不打印 (锁定)</td><td>《设计院内部校对核查表》</td></tr>
+                        <tr><td><code>tpl_meeting</code></td><td>多方会审 (建设/设计/监理/施工)</td><td>MEETING-REVIEW-NOTE</td><td>MR-</td><td>黄色 (2)</td><td>可打印</td><td>《图纸会审与答疑记录表》</td></tr>
+                        <tr><td><code>tpl_change</code></td><td>设计变更 (洽商/变更记录附图)</td><td>CHANGE-NOTE</td><td>CHG-</td><td>洋红 (6)</td><td>可打印</td><td>《设计变更与工程洽商核对单》</td></tr>
+                        <tr><td><code>tpl_asbuilt</code></td><td>竣工归档 (施工单位竣工图差异)</td><td>AS-BUILD-NOTE</td><td>AS-</td><td>洋红 (6)</td><td>不打印 (锁定)</td><td>《竣工图差异与洽商汇总表》</td></tr>
+                        <tr><td><code>tpl_construct</code></td><td>施工现场 (总包技术交底/工序提醒)</td><td>CONSTRUCTION-NOTE</td><td>CON-</td><td>绿色 (3)</td><td>可打印</td><td>《施工现场技术交底备忘单》</td></tr>
+                        <tr><td><code>tpl_supervise</code></td><td>工程监理 (现场巡查与通知单附图)</td><td>SUPERVISOR-NOTE</td><td>SUP-</td><td>蓝色 (5)</td><td>可打印</td><td>《监理巡查旁站整改通知书》</td></tr>
+                        <tr><td><code>tpl_clash</code></td><td>BIM管综 (机电管线碰撞/净空分析)</td><td>CLASH-NOTE</td><td>CLASH-</td><td>紫色 (210)</td><td>可打印</td><td>《BIM多专业管线综合碰撞清单》</td></tr>
+                    </tbody>
+                </table>
+                <p><strong>对象角色驱动与清单导出</strong>：进入【对象与规则】板块，选择对应角色模板直接生效图层、颜色与前缀规则；点击【导出当前对象批注台账 Excel】，可直接输出带专属表头和列宽的标准电子表格或 CSV 文件。</p>
+
+                <!-- 2.6 生命周期状态机与颜色映射 -->
+                <h3 id="feat-lifecycle"><i class="fa-solid fa-arrows-spin"></i> 2.6 生命周期状态机与颜色映射 (`NOTECOLOR`)</h3>
+                <p>遵循工程图纸审查闭环标准，每条批注具备 5 级严格状态机，并与 CAD 视口颜色实时动态联动：</p>
+                <div class="state-flow">
+                    <span class="state-badge state-draft"><i class="fa-solid fa-file-pen"></i> 草稿 (Draft)</span>
+                    <i class="fa-solid fa-arrow-right state-arrow"></i>
+                    <span class="state-badge state-pending"><i class="fa-solid fa-circle-exclamation"></i> 待办 (Pending) [红色]</span>
+                    <i class="fa-solid fa-arrow-right state-arrow"></i>
+                    <span class="state-badge state-resolved"><i class="fa-solid fa-circle-check"></i> 已改 (Resolved) [绿色]</span>
+                    <i class="fa-solid fa-arrow-right state-arrow"></i>
+                    <span class="state-badge state-closed"><i class="fa-solid fa-lock"></i> 已闭环 (Closed) [灰色]</span>
+                </div>
+                <p>当设计人员完成图纸整改并在面板中回复后，图面上的云线与标注文字颜色会自动由<strong>紧迫红（Color 1）</strong>转为<strong>已改绿（Color 3）</strong>；审查人复核无误点击闭环后，自动转为<strong>归档灰（Color 8）</strong>，项目整改进度一目了然。</p>
+
+                <!-- 2.7 可停靠面板与双击居中缩放 -->
+                <h3 id="feat-palette"><i class="fa-solid fa-table-columns"></i> 2.7 批注看板、悬停卡片与底部详情预览 (`CNP` / `NOTEPANEL`)</h3>
+                <p>侧边看板（PaletteSet）是日常集中管理与查看批注的核心入口，具备多项贴合实际绘图的人性化交互：</p>
+                <ul>
+                    <li><strong>双击快速居中穿透定位</strong>：在列表中双击任意一条批注，AutoCAD 视口自动平滑缩放居中聚焦至对应云线，并自适应保留呼吸安全边距。</li>
+                    <li><strong>多维快速组合过滤</strong>：支持按专业（建筑/结构/暖通/给排水/电气）、责任人、严重等级及当前生命周期状态实时筛选。</li>
+                    <li><strong>鼠标悬停卡片 (Tooltip)</strong>：鼠标移至某条记录上方时，自动浮动卡片预览完整审查意见与最新整改答复（包含答复人、时间与流转说明）。</li>
+                    <li><strong>底部常驻详情预览面板</strong>：单选某条批注，看板底部即时展开完整审查与答复详情，无需频繁点击弹窗。</li>
+                    <li><strong>图面快速状态流转</strong>：右键菜单或点击“回复/流转”按钮，即可直接追加整改意见并驱动状态演进（如待办转已改）。</li>
+                    <li><strong>一键直达使用手册</strong>：看板顶部工具栏配有【帮助】按钮（或敲命令 <code>CNH</code> / <code>CNHELP</code>），随时随地离线调出本手册查阅。</li>
+                </ul>
+
+                <!-- 2.8 XRecord 4+2分片与自动分卷 -->
+                <h3 id="feat-storage"><i class="fa-solid fa-database"></i> 2.8 XRecord 4+2分片与 50 条自动分卷拓扑</h3>
+                <p>系统实施了针对工程大图纸优化的 <strong>4+2 分片存储结构</strong>，避免单个扩展字典臃肿：</p>
+                <div class="diagram-box">
+                    <div class="diagram-title"><i class="fa-solid fa-sitemap"></i> 命名对象字典 (NOD) 分卷与 4+2 分片拓扑模型</div>
+                    <svg class="diagram-svg" viewBox="0 0 800 200" width="800" height="200" xmlns="http://www.w3.org/2000/svg">
+                        <rect x="20" y="70" width="160" height="60" rx="8" fill="#0369A1"/>
+                        <text x="100" y="96" fill="#FFFFFF" font-size="12.5" font-weight="bold" text-anchor="middle">根命名对象字典 (NOD)</text>
+                        <text x="100" y="116" fill="#BAE6FD" font-size="11" text-anchor="middle">CAD_NOTE_ROOT_DICT</text>
+
+                        <path d="M 180 100 L 250 50 M 180 100 L 250 150" fill="none" stroke="#94A3B8" stroke-width="2"/>
+
+                        <rect x="250" y="25" width="170" height="50" rx="6" fill="#0284C7"/>
+                        <text x="335" y="46" fill="#FFFFFF" font-size="12" font-weight="bold" text-anchor="middle">分卷 V001 (1~50条)</text>
+                        <text x="335" y="64" fill="#E0F2FE" font-size="10.5" text-anchor="middle">CAD_NOTE_DICT_V001</text>
+
+                        <rect x="250" y="125" width="170" height="50" rx="6" fill="#0284C7"/>
+                        <text x="335" y="146" fill="#FFFFFF" font-size="12" font-weight="bold" text-anchor="middle">分卷 V002 (51~100条)</text>
+                        <text x="335" y="164" fill="#E0F2FE" font-size="10.5" text-anchor="middle">CAD_NOTE_DICT_V002</text>
+
+                        <path d="M 420 50 L 480 50" fill="none" stroke="#94A3B8" stroke-width="2"/>
+
+                        <rect x="480" y="15" width="300" height="70" rx="8" fill="#F8FAFC" stroke="#CBD5E1" stroke-width="1.5"/>
+                        <text x="495" y="38" fill="#0F172A" font-size="12" font-weight="bold">批注分片: NOTE_{ID}_*</text>
+                        <text x="495" y="56" fill="#0284C7" font-size="11">基础分片: _MAIN | _CLOUDS | _TEXT | _REPLIES</text>
+                        <text x="495" y="73" fill="#10B981" font-size="11">扩展分片: _AUDIT (防篡改) | _AI (语义标签)</text>
+                    </svg>
+                </div>
+
+                <!-- 2.9 图纸跨版本比对与对齐 -->
+                <h3 id="feat-compare"><i class="fa-solid fa-code-compare"></i> 2.9 图纸跨版本比对与对齐 (`NOTECOMPARE`)</h3>
+                <p>支持设计院新旧两版图纸之间的差异云线自动识别与跨版本流转。在 AutoCAD 2019 及以上版本中，一键联动宿主原生 <code>COMPARE</code> 引擎进行像素级差分；在低版本 CAD 中自动引导通过离线审查包进行比对。</p>
+
+                <!-- 2.10 规范知识库与条文检索 -->
+                <h3 id="feat-kb"><i class="fa-solid fa-book-bookmark"></i> 2.10 规范知识库与条文检索 (`NOTEKB` / `NOTEAISEARCH`)</h3>
+                <p>内置主流国家建筑工程审查标准规范（《建筑防火通用规范》、《无障碍设计规范》等典型条款）。输入 <code>NOTEAISEARCH</code> 并输入问题描述，系统基于纯 C# Bigram 模糊算法瞬间匹配最适用的国家标准条款与修改建议，一键回填至批注内容中。</p>
+
+                <!-- 2.11 原生Excel与图纸汇总表导出 -->
+                <h3 id="feat-export"><i class="fa-solid fa-file-excel"></i> 2.11 导出台账清单与图面 7 列闭环汇总表 (`NOTEOUT` / `NOTESUMMARY`)</h3>
+                <div class="grid">
+                    <div class="card">
+                        <div class="card-icon"><i class="fa-solid fa-table"></i></div>
+                        <h4>图面 7 列《图纸审查与整改闭环汇总表》 (`NOTESUMMARY`)</h4>
+                        <p>执行 <code>NOTESUMMARY</code> 指定插入点，在图框旁排版绘制原生 CAD 表格。列结构严格包含：<code>序号 | 专业 | 批注标题 | 当前状态 | 批注者 | 审查意见详情 | 整改答复/流转说明</code>。出图晒图即可直接作为正式的工程会审闭环凭证。</p>
+                    </div>
+                    <div class="card">
+                        <div class="card-icon"><i class="fa-solid fa-file-excel"></i></div>
+                        <h4>零依赖原生 Excel / CSV 台账导出 (`NOTEOUT`)</h4>
+                        <p>执行 <code>NOTEOUT</code> 导出无依赖的标准 Excel（.xls）或带 UTF-8 BOM 的 CSV 清单，完整包含审查意见与最新整改答复。无需电脑安装 Office 或任何商业第三方组件，开箱即用，便于汇报与跨单位流转。</p>
+                    </div>
+                </div>
+
+                <!-- 2.12 链式SHA256防篡改审计 -->
+                <h3 id="feat-audit"><i class="fa-solid fa-fingerprint"></i> 2.12 链式 SHA256 防篡改审计 (`NOTEAUDIT`)</h3>
+                <p>每次新建批注、流转状态、修改责任人或追加回复时，系统自动生成包含前序哈希、操作人、时间戳与差异快照的 SHA256 审计块。输入 <code>NOTEAUDIT</code> 可瞬时校验整条批注的历史修改链，确保大型工程审查记录不可抵赖、不可伪造。</p>
+            </section>
+
+            <!-- 3. 五步极速上手指引 -->
+            <section id="quickstart">
+                <h2><i class="fa-solid fa-play"></i> 3. 五步极速上手指引</h2>
+                <div class="step-box">
+                    <div class="step-title"><i class="fa-solid fa-list-check"></i> 从安装到审查闭环的标准工作流</div>
+                    <ol class="step-list">
+                        <li><strong>第一步：启动看板 (<code>CNP</code>)</strong> — 在 CAD 命令行输入 <code>CNP</code>，停靠看板将在屏幕侧边展开。</li>
+                        <li><strong>第二步：新建批注 (<code>CNOTE</code> / <code>CN</code> / <code>CNQ</code>)</strong> — 输入 <code>CNOTE</code> 框选生成标准批注；或直接输入 <code>CNQ</code> 启用免弹窗极速批注，拖拽引线时按 <code>S</code> 键秒切 1~8 黄金短语，落图如飞。</li>
+                        <li><strong>第三步：填写意见</strong> — 弹窗中从审查词典/规范库快速选择条款或手动输入，按回车确定文字放置位置。</li>
+                        <li><strong>第四步：流转与回复 (<code>CNR</code>)</strong> — 施工或设计方修改后，输入 <code>CNR</code>（或在看板选中点击回复），将状态切换为“已改”，云线秒级转绿。</li>
+                        <li><strong>第五步：输出成果</strong> — 在 <code>CNP</code> 面板直接点击导出，或输入 <code>NOTEOUT</code> 导出全图批注 Excel 台账、输入 <code>NOTESUMMARY</code> 在图框旁生成批注汇总表。</li>
+                    </ol>
+                </div>
+            </section>
+
+            <!-- 4. 业务命令速查表 -->
+            <section id="commands">
+                <h2><i class="fa-solid fa-terminal"></i> 4. 业务命令速查表 (24项，极简主命令 + 兼容命令)</h2>
+                <h3 style="margin-top: 15px;"><i class="fa-solid fa-star"></i> 核心精简大入口 (推荐日常作业使用)</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th width="16%">主命令</th>
+                            <th width="16%">快捷别名</th>
+                            <th width="18%">功能定位</th>
+                            <th width="50%">详细操作说明与推荐场景</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><span class="cmd-tag">CNOTE</span></td>
+                            <td><code>CN</code>, <code>INKNOTE</code></td>
+                            <td>新建云线批注</td>
+                            <td>交互拉框生成自适应闭合云线、引线与多行文字，支持矩形/多边形/徒手画与规范快捷填词。</td>
+                        </tr>
+                        <tr>
+                            <td><span class="cmd-tag">CNP</span></td>
+                            <td><code>CNOTEPANEL</code></td>
+                            <td>集中管理看板</td>
+                            <td><strong>核心综合入口</strong>：呼出侧边协同看板，集中管理查询、双击穿透缩放、回复流转、规范检索、报表导出等全部功能。</td>
+                        </tr>
+                        <tr>
+                            <td><span class="cmd-tag">CNS</span></td>
+                            <td><code>CNOTESET</code></td>
+                            <td>全局参数设置</td>
+                            <td>呼出五大板块配置视窗（绘图几何、极速短语、协同模板、规范知识库、存储系统，含颜色联动、词库管理与场景模板切换）。</td>
+                        </tr>
+                        <tr>
+                            <td><span class="cmd-tag">CNQ</span></td>
+                            <td><code>NOTEQUICK</code></td>
+                            <td>免弹窗极速批注</td>
+                            <td>免弹窗快速放置：框选即生成，拖拽引线时按 S 键秒级单键切词、按 T 键快速录入临时文字。</td>
+                        </tr>
+                        <tr>
+                            <td><span class="cmd-tag">CNAC</span></td>
+                            <td><code>CNADDCLOUD</code></td>
+                            <td>追加云线框</td>
+                            <td>向已有批注追加新云线框与分枝引线，实现一处文字标记多处图面隐患。</td>
+                        </tr>
+                        <tr>
+                            <td><span class="cmd-tag">CNCV</span></td>
+                            <td><code>CNCONVERT</code></td>
+                            <td>对象转云线</td>
+                            <td>选取图面已有 Polyline、Circle、Ellipse 或 Spline，原地重构为标准圆弧云线批注。</td>
+                        </tr>
+                        <tr>
+                            <td><span class="cmd-tag">CNR</span></td>
+                            <td><code>CNREPLY</code></td>
+                            <td>图面快速回复</td>
+                            <td>在图面直接点选任意批注图元，弹出意见追加与状态流转对话框。</td>
+                        </tr>
+                        <tr>
+                            <td><span class="cmd-tag">CND</span></td>
+                            <td><code>CNDEL</code></td>
+                            <td>图面安全删除</td>
+                            <td>在图面点选批注图元执行关联级联安全删除，并自动清理字典对应分片。</td>
+                        </tr>
+                        <tr>
+                            <td><span class="cmd-tag">CNH</span></td>
+                            <td><code>CNHELP</code>, <code>NOTEHELP</code></td>
+                            <td>使用帮助手册</td>
+                            <td>在默认浏览器中一键打开本地 HTML 用户指南，离线亦可完整查阅全部图文操作与快捷键指引。</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h3 style="margin-top: 25px;"><i class="fa-solid fa-list"></i> 直达功能与兼容命令速查</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th width="16%">直达命令</th>
+                            <th width="16%">兼容别名</th>
+                            <th width="18%">功能分类</th>
+                            <th width="50%">详细操作说明与推荐场景</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><span class="cmd-tag">CLOUDNOTE</span></td>
+                            <td><code>NOTEADD</code></td>
+                            <td>新建批注 (兼容)</td>
+                            <td>兼容旧版新建云线批注入口。</td>
+                        </tr>
+                        <tr>
+                            <td><span class="cmd-tag">NOTEPANEL</span></td>
+                            <td><code>NOTEPALETTE</code></td>
+                            <td>管理看板 (兼容)</td>
+                            <td>兼容旧版呼出协同看板入口。</td>
+                        </tr>
+                        <tr>
+                            <td><span class="cmd-tag">NOTESET</span></td>
+                            <td><code>NOTECFG</code></td>
+                            <td>参数配置 (兼容)</td>
+                            <td>兼容旧版呼出参数配置视窗。亦可通过侧边栏“设置”按钮一键呼出。</td>
+                        </tr>
+                        <tr>
+                            <td><span class="cmd-tag">NOTEQUERY</span></td>
+                            <td><code>NOTELIST</code></td>
+                            <td>命令行查阅</td>
+                            <td>在命令行中快速打印当前图纸的所有有效批注编号、状态、专业与审查意见。</td>
+                        </tr>
+                        <tr>
+                            <td><span class="cmd-tag">NOTEREPLY</span></td>
+                            <td>-</td>
+                            <td>审查回复 (兼容)</td>
+                            <td>兼容旧版追加多轮整改意见并流转生命周期状态。</td>
+                        </tr>
+                        <tr>
+                            <td><span class="cmd-tag">NOTEOUT</span></td>
+                            <td><code>NOTEEXPORT</code></td>
+                            <td>导出清单台账</td>
+                            <td>弹出保存对话框，将批注汇总导出为带样式 Excel（.xls）或标准 CSV 文件。</td>
+                        </tr>
+                        <tr>
+                            <td><span class="cmd-tag">NOTESUMMARY</span></td>
+                            <td><code>NOTETABLE</code></td>
+                            <td>绘制汇总表格</td>
+                            <td>在图面指定点生成原生 CAD Table 表格，自动计算行高列宽，便于出图晒图。</td>
+                        </tr>
+                        <tr>
+                            <td><span class="cmd-tag">NOTEKB</span></td>
+                            <td>-</td>
+                            <td>规范知识库检索</td>
+                            <td>快速检索国家工程防火、疏散、构造规范条款及常用专家审查评语。</td>
+                        </tr>
+                        <tr>
+                            <td><span class="cmd-tag">NOTEAISEARCH</span></td>
+                            <td>-</td>
+                            <td>规范条文模糊搜索</td>
+                            <td>输入审查草稿，自动基于模糊匹配度推荐对应的规范条款与整改建议。</td>
+                        </tr>
+                        <tr>
+                            <td><span class="cmd-tag">NOTEAUDIT</span></td>
+                            <td>-</td>
+                            <td>SHA256 审计追溯</td>
+                            <td>点选任意批注，在命令行打印全生命周期防篡改哈希链并验证其完整性。</td>
+                        </tr>
+                        <tr>
+                            <td><span class="cmd-tag">NOTEPKG</span></td>
+                            <td>-</td>
+                            <td>导出离线审查包</td>
+                            <td>将图纸批注打包生成 <code>.cloudnotepkg</code>，用于与协作方离线交换。</td>
+                        </tr>
+                        <tr>
+                            <td><span class="cmd-tag">NOTEIMPORT</span></td>
+                            <td>-</td>
+                            <td>导入离线审查包</td>
+                            <td>将外部回传的 <code>.cloudnotepkg</code> 增量合并回当前 DWG 图纸中。</td>
+                        </tr>
+                        <tr>
+                            <td><span class="cmd-tag">NOTEBATCH</span></td>
+                            <td>-</td>
+                            <td>批量多图扫描</td>
+                            <td>后台免开图扫描指定文件夹内的所有 DWG，出具项目多图审图合并报告。</td>
+                        </tr>
+                        <tr>
+                            <td><span class="cmd-tag">NOTECOLOR</span></td>
+                            <td>-</td>
+                            <td>全图状态着色刷新</td>
+                            <td>按照生命周期状态一键重置当前图纸中所有云线与文字的显示颜色。</td>
+                        </tr>
+                        <tr>
+                            <td><span class="cmd-tag">NOTESHOW</span></td>
+                            <td>-</td>
+                            <td>批注图层一键显隐</td>
+                            <td>快速切换批注图层的可见性状态（开/关），不影响底层建筑背景图元。</td>
+                        </tr>
+                        <tr>
+                            <td><span class="cmd-tag">NOTEDEL</span></td>
+                            <td>-</td>
+                            <td>关联图元删除 (兼容)</td>
+                            <td>兼容旧版安全删除指定批注图元及对应字典分片。</td>
+                        </tr>
+                        <tr>
+                            <td><span class="cmd-tag">NOTEADAPT</span></td>
+                            <td>-</td>
+                            <td>图纸比例诊断</td>
+                            <td>诊断并输出当前图纸有效绘图比例因子，以及推荐的弧长与文字字高。</td>
+                        </tr>
+                        <tr>
+                            <td><span class="cmd-tag">NOTECOMPARE</span></td>
+                            <td>-</td>
+                            <td>版本差异比对</td>
+                            <td>联动 AutoCAD 原生 COMPARE 引擎或启动图纸两版对比分析。</td>
+                        </tr>
+                        <tr>
+                            <td><span class="cmd-tag">NOTECHECK</span></td>
+                            <td>-</td>
+                            <td>数据自检与平滑升级</td>
+                            <td>检查扩展字典节点健康度，自动将旧版本单字典结构平滑迁移入分卷字典。</td>
+                        </tr>
+                        <tr>
+                            <td><span class="cmd-tag">NOTEHELP</span></td>
+                            <td><code>CNHELP</code>, <code>CNH</code></td>
+                            <td>打开使用手册</td>
+                            <td><strong>帮助入口</strong>：在默认浏览器中一键打开本 HTML 用户指南，离线亦可完整查阅全部图文操作。</td>
+                        </tr>
+                        <tr>
+                            <td><span class="cmd-tag">NOTELOG</span></td>
+                            <td>-</td>
+                            <td>打开运行日志</td>
+                            <td>在 Windows 资源管理器中一键打开插件的日志存储目录。</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <!-- 5. 各版本兼容支持列表 -->
+            <section id="compatibility">
+                <h2><i class="fa-solid fa-desktop"></i> 5. AutoCAD 2007 ~ 2027 各版本兼容支持列表 (11 代外壳)</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>外壳工程</th>
+                            <th>适配 AutoCAD 版本</th>
+                            <th>CLR 运行时</th>
+                            <th>架构支持</th>
+                            <th>UI 表现层与主题自适应</th>
+                            <th>兼容状态</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td><strong>R17</strong></td><td>AutoCAD 2007 ~ 2009</td><td>.NET 3.5 / CLR 2.0</td><td>x86 / AnyCPU</td><td>WinForms 双色智能自适应（深色/浅色根据 COLORTHEME 自动匹配）</td><td class="status-ok">已通过编译测试</td></tr>
+                        <tr><td><strong>R18</strong></td><td>AutoCAD 2010 ~ 2012</td><td>.NET 3.5 / CLR 2.0</td><td>x86 / AnyCPU</td><td>WinForms 双色智能自适应（深色/浅色根据 COLORTHEME 自动匹配）</td><td class="status-ok">已通过编译测试</td></tr>
+                        <tr><td><strong>R19</strong></td><td>AutoCAD 2013 ~ 2014</td><td>.NET 4.0 / CLR 4.0</td><td>x64</td><td>WPF 双色智能自适应（深色工程护眼 / 浅色明亮高对比）</td><td class="status-ok">已通过编译测试</td></tr>
+                        <tr><td><strong>R20</strong></td><td>AutoCAD 2015 ~ 2016</td><td>.NET 4.5 / CLR 4.0</td><td>x64</td><td>WPF 双色智能自适应（深色工程护眼 / 浅色明亮高对比）</td><td class="status-ok">已通过编译测试</td></tr>
+                        <tr><td><strong>R21</strong></td><td>AutoCAD 2017</td><td>.NET 4.6</td><td>x64</td><td>WPF 双色智能自适应（深色工程护眼 / 浅色明亮高对比）</td><td class="status-ok">已通过编译测试</td></tr>
+                        <tr><td><strong>R22</strong></td><td>AutoCAD 2018</td><td>.NET 4.6</td><td>x64</td><td>WPF 双色智能自适应（深色工程护眼 / 浅色明亮高对比）</td><td class="status-ok">已通过编译测试</td></tr>
+                        <tr><td><strong>R23</strong></td><td>AutoCAD 2019 ~ 2020</td><td>.NET 4.7</td><td>x64</td><td>WPF 双色智能自适应（深色工程护眼 / 浅色明亮高对比）</td><td class="status-ok">已通过编译测试</td></tr>
+                        <tr><td><strong>R24</strong></td><td>AutoCAD 2021 ~ 2024</td><td>.NET 4.8</td><td>x64</td><td>WPF 双色智能自适应（深色工程护眼 / 浅色明亮高对比）</td><td class="status-ok">已通过编译测试</td></tr>
+                        <tr><td><strong>R25</strong></td><td>AutoCAD 2025</td><td>.NET 8.0 Windows</td><td>x64</td><td>WPF 双色智能自适应（深色工程护眼 / 浅色明亮高对比）</td><td class="status-ok">已通过编译测试</td></tr>
+                        <tr><td><strong>R26</strong></td><td>AutoCAD 2026</td><td>.NET 8.0 Windows</td><td>x64</td><td>WPF 双色智能自适应（深色工程护眼 / 浅色明亮高对比）</td><td class="status-ok">已通过编译测试</td></tr>
+                        <tr><td><strong>R27</strong></td><td>AutoCAD 2027 (R26.0)</td><td>.NET 10.0 Windows</td><td>x64</td><td>WPF 双色智能自适应（深色工程护眼 / 浅色明亮高对比）</td><td class="status-ok">已通过编译测试</td></tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <!-- 6. 常见问题排查 -->
+            <section id="faq">
+                <h2><i class="fa-solid fa-circle-question"></i> 6. 常见问题排查 (FAQ)</h2>
+                
+                <div class="faq-item">
+                    <div class="faq-q"><i class="fa-solid fa-question"></i> Q1: 删除批注时，会不会遗漏残留引线或箭头在图纸上？</div>
+                    <div class="faq-a">A: 不会。系统内置完整的级联删除闭环反应器（Cascade Erase）。无论你在图面删除了文字、云线框还是箭头三角形，关联反应器均会自动将整条批注绑定的全部图元与扩展字典数据同步物理清除，并从看板列表中实时移除。</div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-q"><i class="fa-solid fa-question"></i> Q2: 拖拽文字夹点或引线端头时，为什么没有残影而且位置很准？</div>
+                    <div class="faq-a">A: 传统插件依赖 CommandEnded 事件，但夹点拖拽（Grip Edit）不属于普通命令，会导致坐标同步滞后或残留虚影。CAD Auto CloudNote 挂载了 Application.Idle 线程空闲探测，在鼠标松开瞬间立即完成图元坐标校准与对齐。</div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-q"><i class="fa-solid fa-question"></i> Q3: 绘制云线时弧线太大或太小，如何快速适配？</div>
+                    <div class="faq-a">A: 输入 <code>CNS</code> 打开设置视窗，调整“弧长比例系数”；或输入 <code>NOTEADAPT</code> 自动检测图纸 DIMSCALE 比例。在 1:100 建筑图纸下，系统会自动换算适宜的可视化弧长。</div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-q"><i class="fa-solid fa-question"></i> Q4: 复制带有云线批注的图元，会不会破坏原有批注？</div>
+                    <div class="faq-a">A: 不会相互干扰。CAD Auto CloudNote 内置防克隆冲突引擎：若你成套复制了云线和文字，系统在命令结束时会自动分配新的 NoteId 并生成副本分片；若你仅散件复制了单根云线，系统会自动剥离其关联标记，避免数据交叉污染。</div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-q"><i class="fa-solid fa-question"></i> Q5: 图纸长年累月修改，存在无实体关联的死记录怎么清理？</div>
+                    <div class="faq-a">A: 输入 <code>CNS</code> 打开全局设置视窗 -> 在【对象与规则】板块中点击【一键体检】按钮，系统将自动扫描并剔除所有孤儿 XRecord 与失效扩展字典，释放图纸体积。</div>
+                </div>
+            </section>
+
+            <!-- 7. 关于作者与开源交流 -->
+            <section id="about-author">
+                <h2><i class="fa-solid fa-user-heart"></i> 7. 关于作者与开源交流</h2>
+                
+                <!-- 作者寄语 -->
+                <div style="background: #F8FAFC; border: 1px dashed #CBD5E1; border-radius: 12px; padding: 20px 24px; font-size: 13.5px; line-height: 1.85; color: #475569; margin-bottom: 24px;">
+                    <p style="margin: 0 0 8px 0; font-weight: 700; color: #0F172A; font-size: 14.5px;">
+                        <i class="fa-solid fa-heart" style="color: #E11D48; margin-right: 6px;"></i>写在最后：
+                    </p>
+                    <p style="margin: 0 0 8px 0;">
+                        本工具<strong>并非商业公司包装的官方软件</strong>，而是作者平时在工程一线设计之余，利用个人闲暇时间，出于对 CAD 二次开发的技术热爱以及实际审图需求一点点编写完成的小工具。
+                    </p>
+                    <p style="margin: 0 0 8px 0;">
+                        项目采用通用的 <strong>GNU AGPL v3.0</strong> 协议完全开源，代码透明无保留。如果你觉得这个小工具在日常审图、画云线、整理修改意见或导出台账时，确实帮你省下了一些机械重复的时间，那就是对作者业余付出最大的鼓励。
+                    </p>
+                    <p style="margin: 0;">
+                        受限于个人业余精力打磨，软件难免有未尽完善之处。如果在使用中发现 bug、遇到特定图纸异常，或者你有更贴合一线绘图习惯的好建议，非常欢迎通过 QQ 或邮件直接交流，或者在 GitHub 仓库提交 Issue 共同探讨！
+                    </p>
+                </div>
+
+                <!-- 图2代码级完整复刻呈现卡片 (100% 纯前端 CSS/HTML 代码矢量呈现，无位图缩放失真与依赖) -->
+                <div class="author-interactive-card" style="background: #FFFFFF; border: 1px solid #E2E8F0; border-radius: 14px; padding: 46px 32px 38px 32px; text-align: center; margin: 24px auto; max-width: 800px; box-shadow: 0 6px 24px -2px rgba(15, 23, 42, 0.08), 0 2px 6px -1px rgba(15, 23, 42, 0.04);">
+                    
+                    <!-- 标题行：CadAutoCloudNote · By：浅醉·墨语 (Andy_127) -->
+                    <div style="font-size: 20px; font-weight: 700; color: #0F172A; margin-bottom: 14px; letter-spacing: 0.3px;">
+                        <span style="color: #EA580C; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">CadAutoCloudNote</span>
+                        <span style="color: #94A3B8; font-weight: 400; margin: 0 6px;">·</span>
+                        <span>By：<strong>浅醉·墨语 (Andy_127)</strong></span>
+                    </div>
+
+                    <!-- 联系方式行：QQ: 806894478 | Email: ypj127@163.com -->
+                    <div style="font-size: 15px; color: #475569; margin-bottom: 32px; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
+                        <span>联系方式：</span>
+                        <span>QQ: <strong style="color: #0F172A; user-select: all;">806894478</strong></span>
+                        <span style="color: #CBD5E1; margin: 0 12px;">|</span>
+                        <span>Email: <a href="mailto:ypj127@163.com" style="color: #0284C7; text-decoration: none; font-weight: 600;" title="点击发送邮件">ypj127@163.com</a></span>
+                    </div>
+
+                    <!-- 按钮：访问 GitHub 项目仓库 -->
+                    <div>
+                        <a href="https://github.com/Andyang127/CadAutoCloudNote" target="_blank" rel="noopener noreferrer" 
+                           style="display: inline-flex; align-items: center; justify-content: center; gap: 10px; background: #24292F; color: #FFFFFF; padding: 12px 32px; border-radius: 9px; text-decoration: none; font-size: 14.5px; font-weight: 600; box-shadow: 0 3px 12px rgba(36, 41, 47, 0.25); transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);"
+                           onmouseover="this.style.background='#0F172A'; this.style.transform='translateY(-2px)'; this.style.boxShadow='0 6px 20px rgba(15,23,42,0.32)';"
+                           onmouseout="this.style.background='#24292F'; this.style.transform='translateY(0)'; this.style.boxShadow='0 3px 12px rgba(36,41,47,0.25)';">
+                            <i class="fa-brands fa-github" style="font-size: 19px;"></i>
+                            <span>访问 GitHub 项目仓库</span>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="footer" style="margin-top: 36px; padding-top: 20px; border-top: 1px solid var(--border-color); text-align: center; color: #94A3B8; font-size: 12px;">
+                    <p style="margin: 0 0 6px 0;">© 2026 浅醉·墨语 · 基于兴趣与实用开源 (GNU AGPL v3.0)</p>
+                    <p style="margin: 0;">适用 AutoCAD 2007 ~ 2027 · 文档版本：v0.1.0-测试版</p>
+                </div>
+            </section>
+        </main>
+    </div>
+</body>
+</html>

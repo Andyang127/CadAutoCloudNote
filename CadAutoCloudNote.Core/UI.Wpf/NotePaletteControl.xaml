@@ -1,0 +1,206 @@
+<UserControl x:Class="CadAutoCloudNote.Core.UI.Wpf.NotePaletteControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             FontFamily="Microsoft YaHei" Background="{DynamicResource WindowBg}">
+    <UserControl.Resources>
+        <!-- 默认双色主题画刷 (根据 AutoCAD COLORTHEME 动态重绘) -->
+        <SolidColorBrush x:Key="WindowBg" Color="#F8FAFC"/>
+        <SolidColorBrush x:Key="HeaderBg" Color="#FFFFFF"/>
+        <SolidColorBrush x:Key="CardBg" Color="#FFFFFF"/>
+        <SolidColorBrush x:Key="BorderLine" Color="#E2E8F0"/>
+        <SolidColorBrush x:Key="TextPrimary" Color="#1E293B"/>
+        <SolidColorBrush x:Key="TextSecondary" Color="#64748B"/>
+        <SolidColorBrush x:Key="TextMuted" Color="#94A3B8"/>
+        <SolidColorBrush x:Key="InputBg" Color="#FFFFFF"/>
+        <SolidColorBrush x:Key="ButtonBg" Color="#F1F5F9"/>
+        <SolidColorBrush x:Key="ButtonHover" Color="#E2E8F0"/>
+        <SolidColorBrush x:Key="AccentColor" Color="#0284C7"/>
+        <SolidColorBrush x:Key="ReplyBubbleBg" Color="#F0FDFA"/>
+        <SolidColorBrush x:Key="ReplyBubbleBorder" Color="#CCFBF1"/>
+        <SolidColorBrush x:Key="FlowText" Color="#0F766E"/>
+
+        <Style x:Key="ToolButtonStyle" TargetType="Button">
+            <Setter Property="Background" Value="{DynamicResource ButtonBg}"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource BorderLine}"/>
+            <Setter Property="Foreground" Value="{DynamicResource TextPrimary}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="FontSize" Value="11"/>
+            <Setter Property="Padding" Value="6,2"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="bd" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="3" SnapsToDevicePixels="True">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" Margin="{TemplateBinding Padding}"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="bd" Property="Background" Value="{DynamicResource ButtonHover}"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="bd" Property="Background" Value="{DynamicResource BorderLine}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </UserControl.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- 顶部工具栏与多维搜索区 -->
+        <Border Grid.Row="0" Background="{DynamicResource HeaderBg}" BorderBrush="{DynamicResource BorderLine}" BorderThickness="0,0,0,1" Padding="8,7">
+            <StackPanel Orientation="Vertical">
+                <!-- 批注使用对象快速切换 (规范顶置架构) -->
+                <Grid Margin="0,0,0,6">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Grid.Column="0" Text="使用对象:" Foreground="{DynamicResource TextSecondary}" FontSize="11" FontWeight="SemiBold" VerticalAlignment="Center" Margin="0,0,6,0"/>
+                    <ComboBox x:Name="CmbTargetPersona" Grid.Column="1" Height="24" FontSize="11" SelectionChanged="CmbTargetPersona_SelectionChanged" Background="{DynamicResource InputBg}" Foreground="{DynamicResource TextPrimary}"/>
+                </Grid>
+
+                <!-- 搜索与筛选核心输入区 (带水印、一键清除与状态筛选) -->
+                <Grid Margin="0,0,0,5">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="90"/>
+                        <ColumnDefinition Width="48"/>
+                    </Grid.ColumnDefinitions>
+
+                    <!-- 搜索输入框 + 提示水印 + 一键清空按钮 -->
+                    <Grid Grid.Column="0" Margin="0,0,5,0">
+                        <TextBox x:Name="TxtSearch" Height="25" VerticalContentAlignment="Center" Padding="6,0,22,0" FontSize="11" Background="{DynamicResource InputBg}" Foreground="{DynamicResource TextPrimary}" BorderBrush="{DynamicResource BorderLine}" TextChanged="TxtSearch_TextChanged" PreviewKeyDown="TxtSearch_PreviewKeyDown"/>
+                        <TextBlock x:Name="TxtSearchWatermark" Text="🔍 搜索编号/标题/意见/专业/批注人/答复..." IsHitTestVisible="False" Foreground="{DynamicResource TextMuted}" VerticalAlignment="Center" Margin="7,0,0,0" FontSize="11"/>
+                        <Button x:Name="BtnClearSearch" Content="✕" Width="18" Height="18" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,4,0" Background="Transparent" BorderThickness="0" Foreground="{DynamicResource TextMuted}" Cursor="Hand" Visibility="Collapsed" Click="BtnClearSearch_Click" ToolTip="清空搜索 (Esc)"/>
+                    </Grid>
+
+                    <ComboBox x:Name="CmbStatus" Grid.Column="1" Height="25" Margin="0,0,4,0" FontSize="11" Padding="4,0,16,0" SelectionChanged="CmbStatus_SelectionChanged" Background="{DynamicResource InputBg}" Foreground="{DynamicResource TextPrimary}"/>
+                    <Button x:Name="BtnRefresh" Grid.Column="2" Content="刷新" Height="25" Style="{StaticResource ToolButtonStyle}" Click="BtnRefresh_Click"/>
+                </Grid>
+
+                <!-- 操作按钮组 (自适应排版) -->
+                <WrapPanel Margin="0,0,0,4">
+                    <Button x:Name="BtnAdd" Content="+ 新建" Width="55" Height="24" Margin="0,0,4,3" Style="{StaticResource ToolButtonStyle}" Click="BtnAdd_Click" ToolTip="新建云线批注 (CLOUDNOTE)"/>
+                    <Button x:Name="BtnReply" Content="回复/流转" Width="66" Height="24" Margin="0,0,4,3" Style="{StaticResource ToolButtonStyle}" Click="BtnReply_Click" ToolTip="流转当前选中批注 (NOTEREPLY)"/>
+                    <Button x:Name="BtnTable" Content="汇总表" Width="54" Height="24" Margin="0,0,4,3" Style="{StaticResource ToolButtonStyle}" Click="BtnTable_Click" ToolTip="生成图面汇总表 (NOTETABLE)"/>
+                    <Button x:Name="BtnExport" Content="导出" Width="48" Height="24" Margin="0,0,4,3" Style="{StaticResource ToolButtonStyle}" Click="BtnExport_Click" ToolTip="导出批注报表 (NOTEEXPORT)"/>
+                    <Button x:Name="BtnSettings" Content="设置" Width="48" Height="24" Margin="0,0,4,3" Style="{StaticResource ToolButtonStyle}" Click="BtnSettings_Click" ToolTip="参数设置 (NOTESETTINGS)"/>
+                    <Button x:Name="BtnHelp" Content="帮助" Width="48" Height="24" Margin="0,0,0,3" Style="{StaticResource ToolButtonStyle}" Click="BtnHelp_Click" ToolTip="查看插件手册 (NOTEHELP)"/>
+                </WrapPanel>
+
+                <!-- 匹配与统计结果摘要条 -->
+                <DockPanel LastChildFill="True">
+                    <TextBlock x:Name="TxtMatchCount" Text="共 0 条批注" FontSize="10.5" Foreground="{DynamicResource TextSecondary}" VerticalAlignment="Center"/>
+                    <TextBlock Text="双击对焦 · 右键菜单" HorizontalAlignment="Right" FontSize="10" Foreground="{DynamicResource TextMuted}" VerticalAlignment="Center"/>
+                </DockPanel>
+            </StackPanel>
+        </Border>
+
+        <!-- 批注列表 (支持悬停浮动卡片、自适应列宽分配与双击图纸对焦) -->
+        <ListView x:Name="LvNotes" Grid.Row="1" BorderThickness="0" Background="{DynamicResource WindowBg}" Foreground="{DynamicResource TextPrimary}" MouseDoubleClick="LvNotes_MouseDoubleClick" SelectionChanged="LvNotes_SelectionChanged" SizeChanged="LvNotes_SizeChanged">
+            <ListView.ItemContainerStyle>
+                <Style TargetType="ListViewItem">
+                    <Setter Property="ToolTip" Value="{Binding TooltipText}"/>
+                    <Setter Property="Padding" Value="4,3"/>
+                    <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                </Style>
+            </ListView.ItemContainerStyle>
+            <ListView.ContextMenu>
+                <ContextMenu>
+                    <MenuItem Header="新建云线批注(N)" Click="BtnAdd_Click"/>
+                    <MenuItem Header="对象转云线(O)..." Click="BtnConvert_Click"/>
+                    <MenuItem Header="查看/流转批注(V)" Click="BtnReply_Click"/>
+                    <Separator/>
+                    <MenuItem Header="生成图面汇总表(T)" Click="BtnTable_Click"/>
+                    <MenuItem Header="刷新批注列表(R)" Click="BtnRefresh_Click"/>
+                    <Separator/>
+                    <MenuItem Header="全局参数设置(S)..." Click="BtnSettings_Click"/>
+                    <MenuItem Header="帮助与使用手册(H)..." Click="BtnHelp_Click"/>
+                </ContextMenu>
+            </ListView.ContextMenu>
+            <ListView.View>
+                <GridView x:Name="GvNotes">
+                    <GridViewColumn x:Name="ColTitle" Header="标题" Width="130" DisplayMemberBinding="{Binding DisplayTitle}"/>
+                    <GridViewColumn Header="专业" Width="50" DisplayMemberBinding="{Binding Discipline}"/>
+                    <GridViewColumn Header="状态" Width="55" DisplayMemberBinding="{Binding StateName}"/>
+                    <GridViewColumn Header="批注者" Width="80" DisplayMemberBinding="{Binding Assignee}"/>
+                </GridView>
+            </ListView.View>
+        </ListView>
+
+        <!-- 底部现代控制台：全图状态分类胶囊栏 + 富交互详情与流转答复卡片 -->
+        <Border Grid.Row="2" Background="{DynamicResource CardBg}" BorderBrush="{DynamicResource BorderLine}" BorderThickness="0,1,0,0" Padding="8,6">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <!-- 1. 全图状态分类胶囊统计栏 (支持一键交互点击即时切换筛选过滤) -->
+                <WrapPanel Grid.Row="0" Margin="0,0,0,6" VerticalAlignment="Center">
+                    <!-- 全部 -->
+                    <Border x:Name="PillAll" CornerRadius="10" Background="#F1F5F9" BorderBrush="#CBD5E1" BorderThickness="1" Margin="0,0,4,2" Padding="6,2" Cursor="Hand" MouseLeftButtonDown="PillFilter_Click" Tag="-1" ToolTip="点击查看全部批注">
+                        <TextBlock x:Name="TxtCountAll" Text="全部 0" FontSize="10.5" FontWeight="SemiBold" Foreground="#334155"/>
+                    </Border>
+                    <!-- 待办 -->
+                    <Border x:Name="PillPending" CornerRadius="10" Background="#FEF2F2" BorderBrush="#FECACA" BorderThickness="1" Margin="0,0,4,2" Padding="6,2" Cursor="Hand" MouseLeftButtonDown="PillFilter_Click" Tag="0" ToolTip="点击筛选待办批注">
+                        <StackPanel Orientation="Horizontal">
+                            <Ellipse Width="6" Height="6" Fill="#EF4444" Margin="0,0,4,0" VerticalAlignment="Center"/>
+                            <TextBlock x:Name="TxtCountPending" Text="待办 0" FontSize="10.5" FontWeight="SemiBold" Foreground="#B91C1C"/>
+                        </StackPanel>
+                    </Border>
+                    <!-- 已改 -->
+                    <Border x:Name="PillResolved" CornerRadius="10" Background="#ECFDF5" BorderBrush="#A7F3D0" BorderThickness="1" Margin="0,0,4,2" Padding="6,2" Cursor="Hand" MouseLeftButtonDown="PillFilter_Click" Tag="1" ToolTip="点击筛选已修改待复核批注">
+                        <StackPanel Orientation="Horizontal">
+                            <Ellipse Width="6" Height="6" Fill="#10B981" Margin="0,0,4,0" VerticalAlignment="Center"/>
+                            <TextBlock x:Name="TxtCountResolved" Text="已改 0" FontSize="10.5" FontWeight="SemiBold" Foreground="#047857"/>
+                        </StackPanel>
+                    </Border>
+                    <!-- 驳回 -->
+                    <Border x:Name="PillRejected" CornerRadius="10" Background="#FFFBEB" BorderBrush="#FDE68A" BorderThickness="1" Margin="0,0,4,2" Padding="6,2" Cursor="Hand" MouseLeftButtonDown="PillFilter_Click" Tag="2" ToolTip="点击筛选被驳回批注">
+                        <StackPanel Orientation="Horizontal">
+                            <Ellipse Width="6" Height="6" Fill="#F59E0B" Margin="0,0,4,0" VerticalAlignment="Center"/>
+                            <TextBlock x:Name="TxtCountRejected" Text="驳回 0" FontSize="10.5" FontWeight="SemiBold" Foreground="#B45309"/>
+                        </StackPanel>
+                    </Border>
+                    <!-- 已闭环 -->
+                    <Border x:Name="PillClosed" CornerRadius="10" Background="#F3F4F6" BorderBrush="#E5E7EB" BorderThickness="1" Margin="0,0,4,2" Padding="6,2" Cursor="Hand" MouseLeftButtonDown="PillFilter_Click" Tag="3" ToolTip="点击筛选已闭环批注">
+                        <StackPanel Orientation="Horizontal">
+                            <Ellipse Width="6" Height="6" Fill="#6B7280" Margin="0,0,4,0" VerticalAlignment="Center"/>
+                            <TextBlock x:Name="TxtCountClosed" Text="闭环 0" FontSize="10.5" FontWeight="SemiBold" Foreground="#4B5563"/>
+                        </StackPanel>
+                    </Border>
+                </WrapPanel>
+
+                <!-- 分割线 -->
+                <Separator Grid.Row="1" Margin="0,0,0,5" Background="{DynamicResource BorderLine}"/>
+
+                <!-- 2. 富交互详情与流转答复卡片 (同时保留 TxtDetailTitle / TxtDetailContent / TxtDetailReply 满足测试) -->
+                <StackPanel Grid.Row="2" Orientation="Vertical">
+                    <DockPanel LastChildFill="True" Margin="0,0,0,3">
+                        <StackPanel DockPanel.Dock="Right" Orientation="Horizontal" VerticalAlignment="Center">
+                            <Button x:Name="BtnQuickZoom" Content="🎯 定位" Height="20" Padding="5,0" Margin="3,0,0,0" Style="{StaticResource ToolButtonStyle}" Click="BtnQuickZoom_Click" ToolTip="在当前图纸中平滑居中定位该批注"/>
+                            <Button x:Name="BtnQuickReply" Content="✍️ 流转" Height="20" Padding="5,0" Margin="3,0,0,0" Style="{StaticResource ToolButtonStyle}" Click="BtnReply_Click" ToolTip="打开批注流转答复窗口"/>
+                        </StackPanel>
+                        <TextBlock x:Name="TxtDetailTitle" Text="批注详情与流转答复预览" FontWeight="Bold" FontSize="11" Foreground="{DynamicResource TextPrimary}" TextTrimming="CharacterEllipsis" VerticalAlignment="Center"/>
+                    </DockPanel>
+
+                    <TextBlock x:Name="TxtDetailContent" Text="在列表中选中批注可实时查看完整审查意见与最新流转答复。" FontSize="11" Foreground="{DynamicResource TextSecondary}" TextWrapping="Wrap" MaxHeight="40" Margin="0,0,0,4" TextTrimming="CharacterEllipsis"/>
+
+                    <Border Background="{DynamicResource ReplyBubbleBg}" BorderBrush="{DynamicResource ReplyBubbleBorder}" BorderThickness="1" CornerRadius="3" Padding="5,3">
+                        <TextBlock x:Name="TxtDetailReply" Text="最新答复: -" FontSize="10.5" Foreground="{DynamicResource FlowText}" TextWrapping="Wrap" MaxHeight="30" TextTrimming="CharacterEllipsis"/>
+                    </Border>
+                </StackPanel>
+            </Grid>
+        </Border>
+    </Grid>
+</UserControl>

@@ -1,0 +1,36 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net45</TargetFramework>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <RootNamespace>CadAutoCloudNote.R19</RootNamespace>
+    <AssemblyName>CadAutoCloudNote_R19</AssemblyName>
+    
+    <OutputPath>..\..\build\R19\</OutputPath>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <ResolveAssemblyWarnOrErrorOnTargetArchitectureMismatch>None</ResolveAssemblyWarnOrErrorOnTargetArchitectureMismatch>
+    <UseWPF>true</UseWPF>
+    <UseWindowsForms>true</UseWindowsForms>
+    
+    <DefineConstants>$(DefineConstants);CAD_R19;USE_WPF</DefineConstants>
+    <SatelliteResourceLanguages>en-US;zh-Hans</SatelliteResourceLanguages>
+    <Platforms>AnyCPU;x86;x64</Platforms>
+    <LangVersion>latest</LangVersion>
+  </PropertyGroup>
+
+  <Import Project="..\..\CadAutoCloudNote.Core\CadAutoCloudNote.Core.projitems" Label="Shared" />
+
+  <ItemGroup>
+    <Reference Include="AcCoreMgd">
+      <HintPath>..\..\Libs\AutoCAD\Net4.0_2013-2014\accoremgd.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="AcDbMgd">
+      <HintPath>..\..\Libs\AutoCAD\Net4.0_2013-2014\acdbmgd.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="AcMgd">
+      <HintPath>..\..\Libs\AutoCAD\Net4.0_2013-2014\acmgd.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+  </ItemGroup>
+</Project>

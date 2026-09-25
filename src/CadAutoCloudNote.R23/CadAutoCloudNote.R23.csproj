@@ -1,0 +1,40 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net47</TargetFramework>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <RootNamespace>CadAutoCloudNote.R23</RootNamespace>
+    <AssemblyName>CadAutoCloudNote_R23</AssemblyName>
+    
+    <OutputPath>..\..\build\R23\</OutputPath>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <ResolveAssemblyWarnOrErrorOnTargetArchitectureMismatch>None</ResolveAssemblyWarnOrErrorOnTargetArchitectureMismatch>
+    <UseWPF>true</UseWPF>
+    <UseWindowsForms>true</UseWindowsForms>
+    
+    <DefineConstants>$(DefineConstants);CAD_R23;USE_WPF</DefineConstants>
+    <SatelliteResourceLanguages>en-US;zh-Hans</SatelliteResourceLanguages>
+    <Platforms>AnyCPU;x86;x64</Platforms>
+    <LangVersion>latest</LangVersion>
+  </PropertyGroup>
+
+  <Import Project="..\..\CadAutoCloudNote.Core\CadAutoCloudNote.Core.projitems" Label="Shared" />
+
+  <ItemGroup>
+    <Reference Include="AcCoreMgd">
+      <HintPath>..\..\Libs\AutoCAD\Net4.7_2019-2020\AcCoreMgd.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="AcDbMgd">
+      <HintPath>..\..\Libs\AutoCAD\Net4.7_2019-2020\AcDbMgd.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="AcMgd">
+      <HintPath>..\..\Libs\AutoCAD\Net4.7_2019-2020\AcMgd.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="AdWindows">
+      <HintPath>..\..\Libs\AutoCAD\Net4.7_2019-2020\AdWindows.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+  </ItemGroup>
+</Project>

@@ -1,0 +1,41 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <RootNamespace>CadAutoCloudNote.R25</RootNamespace>
+    <AssemblyName>CadAutoCloudNote_R25</AssemblyName>
+    
+    <OutputPath>..\..\build\R25\</OutputPath>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <ResolveAssemblyWarnOrErrorOnTargetArchitectureMismatch>None</ResolveAssemblyWarnOrErrorOnTargetArchitectureMismatch>
+    <UseWPF>true</UseWPF>
+    <UseWindowsForms>true</UseWindowsForms>
+    
+    <DefineConstants>$(DefineConstants);CAD_R25;USE_WPF</DefineConstants>
+    <Platforms>AnyCPU;x86;x64</Platforms>
+    <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+    <SatelliteResourceLanguages>en-US;zh-Hans</SatelliteResourceLanguages>
+    <LangVersion>latest</LangVersion>
+  </PropertyGroup>
+
+  <Import Project="..\..\CadAutoCloudNote.Core\CadAutoCloudNote.Core.projitems" Label="Shared" />
+
+  <ItemGroup>
+    <Reference Include="AcCoreMgd">
+      <HintPath>..\..\Libs\AutoCAD\Net8.0_2025-2026\AcCoreMgd.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="AcDbMgd">
+      <HintPath>..\..\Libs\AutoCAD\Net8.0_2025-2026\AcDbMgd.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="AcMgd">
+      <HintPath>..\..\Libs\AutoCAD\Net8.0_2025-2026\AcMgd.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="AdWindows">
+      <HintPath>..\..\Libs\AutoCAD\Net8.0_2025-2026\AdWindows.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+  </ItemGroup>
+</Project>

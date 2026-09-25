@@ -1,0 +1,329 @@
+<Window x:Class="CadAutoCloudNote.Core.UI.Wpf.NoteReplyDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="批注协同回复与状态流转"
+        Width="440" SizeToContent="Height" MinHeight="400" MaxHeight="620"
+        WindowStartupLocation="CenterScreen"
+        WindowStyle="None" AllowsTransparency="True" Background="Transparent"
+        ResizeMode="NoResize"
+        FontFamily="Segoe UI, Microsoft YaHei" FontSize="12">
+
+    <Window.Resources>
+        <SolidColorBrush x:Key="WindowBg" Color="#1E2530"/>
+        <SolidColorBrush x:Key="CardBg" Color="#252E3B"/>
+        <SolidColorBrush x:Key="TitleBarBg" Color="#171D25"/>
+        <SolidColorBrush x:Key="AccentColor" Color="#0084FF"/>
+        <SolidColorBrush x:Key="AccentHover" Color="#2997FF"/>
+        <SolidColorBrush x:Key="TextPrimary" Color="#F5F5F5"/>
+        <SolidColorBrush x:Key="TextSecondary" Color="#A2B0C4"/>
+        <SolidColorBrush x:Key="BorderLine" Color="#374354"/>
+        <SolidColorBrush x:Key="InputBg" Color="#13181F"/>
+        <SolidColorBrush x:Key="ButtonBg" Color="#2F3C4D"/>
+        <SolidColorBrush x:Key="ButtonHover" Color="#3E4E63"/>
+        <SolidColorBrush x:Key="FlowText" Color="#38BDF8"/>
+        <SolidColorBrush x:Key="BadgeBg" Color="#1B3552"/>
+
+        <!-- 扁平现代输入框样式 -->
+        <Style TargetType="TextBox">
+            <Setter Property="OverridesDefaultStyle" Value="True"/>
+            <Setter Property="SnapsToDevicePixels" Value="True"/>
+            <Setter Property="Background" Value="{DynamicResource InputBg}"/>
+            <Setter Property="Foreground" Value="{DynamicResource TextPrimary}"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource BorderLine}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Padding" Value="8,6"/>
+            <Setter Property="VerticalContentAlignment" Value="Top"/>
+            <Setter Property="CaretBrush" Value="{DynamicResource AccentColor}"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="TextBox">
+                        <Border x:Name="bd" Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="5">
+                            <ScrollViewer x:Name="PART_ContentHost" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="bd" Property="BorderBrush" Value="{DynamicResource TextSecondary}"/>
+                            </Trigger>
+                            <Trigger Property="IsFocused" Value="True">
+                                <Setter TargetName="bd" Property="BorderBrush" Value="{DynamicResource AccentColor}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- 现代统一圆角按钮样式 -->
+        <Style TargetType="Button">
+            <Setter Property="OverridesDefaultStyle" Value="True"/>
+            <Setter Property="SnapsToDevicePixels" Value="True"/>
+            <Setter Property="Background" Value="{DynamicResource ButtonBg}"/>
+            <Setter Property="Foreground" Value="{DynamicResource TextPrimary}"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource BorderLine}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Padding" Value="10,0"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="bd" Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="5"
+                                Padding="{TemplateBinding Padding}">
+                            <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                              VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="bd" Property="Background" Value="{DynamicResource ButtonHover}"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="bd" Property="Opacity" Value="0.85"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- 防刺眼 ComboBoxItem -->
+        <Style TargetType="ComboBoxItem">
+            <Setter Property="OverridesDefaultStyle" Value="True"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Foreground" Value="{DynamicResource TextPrimary}"/>
+            <Setter Property="Padding" Value="8,5"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ComboBoxItem">
+                        <Border x:Name="Bd" Background="{TemplateBinding Background}" CornerRadius="4" Padding="{TemplateBinding Padding}" Margin="2,1">
+                            <ContentPresenter HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="Bd" Property="Background" Value="{DynamicResource ButtonHover}"/>
+                            </Trigger>
+                            <Trigger Property="IsSelected" Value="True">
+                                <Setter TargetName="Bd" Property="Background" Value="{DynamicResource AccentColor}"/>
+                                <Setter Property="Foreground" Value="White"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- 扁平现代防刺眼下拉框样式 (彻底消灭白色原生弹窗，深色纯粹) -->
+        <Style x:Key="BulletproofComboBox" TargetType="ComboBox">
+            <Setter Property="OverridesDefaultStyle" Value="True"/>
+            <Setter Property="SnapsToDevicePixels" Value="True"/>
+            <Setter Property="Background" Value="{DynamicResource InputBg}"/>
+            <Setter Property="Foreground" Value="{DynamicResource TextPrimary}"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource BorderLine}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="FontSize" Value="11"/>
+            <Setter Property="Padding" Value="8,0,0,0"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ComboBox">
+                        <Grid>
+                            <Border x:Name="MainBorder" 
+                                    Background="{TemplateBinding Background}"
+                                    BorderBrush="{TemplateBinding BorderBrush}"
+                                    BorderThickness="{TemplateBinding BorderThickness}"
+                                    CornerRadius="5">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="24"/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <ToggleButton x:Name="DropDownToggle"
+                                                  Grid.Column="0"
+                                                  Grid.ColumnSpan="2"
+                                                  Background="Transparent"
+                                                  BorderThickness="0"
+                                                  Focusable="False"
+                                                  IsChecked="{Binding IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}">
+                                        <ToggleButton.Template>
+                                            <ControlTemplate TargetType="ToggleButton">
+                                                <Border Background="Transparent"/>
+                                            </ControlTemplate>
+                                        </ToggleButton.Template>
+                                    </ToggleButton>
+
+                                    <ContentPresenter x:Name="ContentSite"
+                                                      Grid.Column="0"
+                                                      IsHitTestVisible="False"
+                                                      Content="{TemplateBinding SelectionBoxItem}"
+                                                      ContentTemplate="{TemplateBinding SelectionBoxItemTemplate}"
+                                                      ContentTemplateSelector="{TemplateBinding ItemTemplateSelector}"
+                                                      Margin="{TemplateBinding Padding}"
+                                                      VerticalAlignment="Center"
+                                                      HorizontalAlignment="Left"/>
+
+                                    <Path x:Name="Arrow"
+                                          Grid.Column="1"
+                                          Data="M 0 0 L 4 4 L 8 0 Z"
+                                          Fill="{DynamicResource TextSecondary}"
+                                          HorizontalAlignment="Center"
+                                          VerticalAlignment="Center"
+                                          IsHitTestVisible="False"/>
+                                </Grid>
+                            </Border>
+
+                            <Popup x:Name="PART_Popup"
+                                   AllowsTransparency="True"
+                                   IsOpen="{TemplateBinding IsDropDownOpen}"
+                                   Placement="Bottom"
+                                   PopupAnimation="Fade"
+                                   Focusable="False">
+                                <Border x:Name="DropDownBorder"
+                                        MinWidth="{Binding ActualWidth, RelativeSource={RelativeSource TemplatedParent}}"
+                                        MaxHeight="{TemplateBinding MaxDropDownHeight}"
+                                        Background="{DynamicResource WindowBg}"
+                                        BorderBrush="{DynamicResource BorderLine}"
+                                        BorderThickness="1"
+                                        CornerRadius="6"
+                                        Margin="0,2,0,4">
+                                    <Border.Effect>
+                                        <DropShadowEffect BlurRadius="8" ShadowDepth="2" Opacity="0.4" Color="Black"/>
+                                    </Border.Effect>
+                                    <ScrollViewer Margin="2" SnapsToDevicePixels="True" HorizontalScrollBarVisibility="Disabled">
+                                        <StackPanel IsItemsHost="True" KeyboardNavigation.DirectionalNavigation="Contained"/>
+                                    </ScrollViewer>
+                                </Border>
+                            </Popup>
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="MainBorder" Property="BorderBrush" Value="{DynamicResource AccentColor}"/>
+                            </Trigger>
+                            <Trigger Property="IsDropDownOpen" Value="True">
+                                <Setter TargetName="MainBorder" Property="BorderBrush" Value="{DynamicResource AccentColor}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+
+    <Border Background="{DynamicResource WindowBg}" BorderBrush="{DynamicResource BorderLine}" BorderThickness="1" CornerRadius="10">
+        <Border.Effect>
+            <DropShadowEffect BlurRadius="18" ShadowDepth="3" Opacity="0.4" Color="Black"/>
+        </Border.Effect>
+
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="36"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="50"/>
+            </Grid.RowDefinitions>
+
+            <!-- 顶部标题栏 -->
+            <Border Grid.Row="0" Background="{DynamicResource TitleBarBg}" CornerRadius="10,10,0,0" MouseDown="TitleBar_MouseDown">
+                <Grid>
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="14,0,0,0">
+                        <TextBlock Text="批注协同回复与状态流转" Foreground="{DynamicResource TextPrimary}" FontWeight="Bold" FontSize="12" VerticalAlignment="Center"/>
+                        <Border x:Name="BadgeCurrentState" Background="{DynamicResource BadgeBg}" BorderBrush="{DynamicResource BorderLine}" BorderThickness="1" CornerRadius="4" Padding="6,1" Margin="10,0,0,0" VerticalAlignment="Center">
+                            <TextBlock x:Name="TxtCurrentState" Text="待办" Foreground="{DynamicResource FlowText}" FontSize="10" FontWeight="SemiBold"/>
+                        </Border>
+                    </StackPanel>
+
+                    <Button HorizontalAlignment="Right" VerticalAlignment="Stretch" Width="36" Background="Transparent" BorderThickness="0"
+                            Foreground="{DynamicResource TextSecondary}" Cursor="Hand" Click="BtnCancel_Click">
+                        <Button.Style>
+                            <Style TargetType="Button">
+                                <Setter Property="OverridesDefaultStyle" Value="True"/>
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate TargetType="Button">
+                                            <Border x:Name="btnBd" Background="Transparent" CornerRadius="0,10,0,0">
+                                                <TextBlock Text="✕" FontSize="14" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="{Binding Foreground, RelativeSource={RelativeSource TemplatedParent}}"/>
+                                            </Border>
+                                            <ControlTemplate.Triggers>
+                                                <Trigger Property="IsMouseOver" Value="True">
+                                                    <Setter TargetName="btnBd" Property="Background" Value="#E81123"/>
+                                                    <Setter Property="Foreground" Value="#FFFFFF"/>
+                                                </Trigger>
+                                            </ControlTemplate.Triggers>
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                            </Style>
+                        </Button.Style>
+                    </Button>
+                </Grid>
+            </Border>
+
+            <!-- 中间内容卡片 -->
+            <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" Padding="14,10,14,6">
+                <StackPanel>
+                    <!-- 批注概要与流转信息卡片 -->
+                    <Border Background="{DynamicResource CardBg}" BorderBrush="{DynamicResource BorderLine}" BorderThickness="1" CornerRadius="6" Padding="10,8" Margin="0,0,0,8">
+                        <StackPanel>
+                            <TextBlock x:Name="TxtNoteTitle" Text="【1】 批注标题" Foreground="{DynamicResource TextPrimary}" FontWeight="Bold" FontSize="12" TextTrimming="CharacterEllipsis"/>
+                            <TextBlock x:Name="TxtNoteMeta" Text="专业: 建筑 | 批注者: admin" Foreground="{DynamicResource TextSecondary}" FontSize="10" Margin="0,3,0,6"/>
+
+                            <!-- 审查意见详情 -->
+                            <TextBlock Text="审查意见详情:" Foreground="{DynamicResource TextSecondary}" FontSize="10" Margin="0,0,0,2"/>
+                            <Border Background="{DynamicResource InputBg}" CornerRadius="4" BorderBrush="{DynamicResource BorderLine}" BorderThickness="1" Padding="6,4" Margin="0,0,0,6">
+                                <TextBlock x:Name="TxtNoteContent" Text="（无详细审查意见）" Foreground="{DynamicResource TextPrimary}" FontSize="11" TextWrapping="Wrap" MaxHeight="60" TextTrimming="CharacterEllipsis"/>
+                            </Border>
+
+                            <!-- 流转说明 (历史记录呈现) -->
+                            <TextBlock Text="批注流转说明 (历史记录):" Foreground="{DynamicResource TextSecondary}" FontSize="10" Margin="0,0,0,2"/>
+                            <Border Background="{DynamicResource InputBg}" CornerRadius="4" BorderBrush="{DynamicResource BorderLine}" BorderThickness="1" Padding="6,4">
+                                <TextBlock x:Name="TxtLatestWorkflow" Text="（首次流转，暂无历史说明）" Foreground="{DynamicResource FlowText}" FontSize="10.5" TextWrapping="Wrap" MaxHeight="55" TextTrimming="CharacterEllipsis"/>
+                            </Border>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- 状态变更选择 -->
+                    <Grid Margin="0,0,0,8">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Text="流转状态变更至:" Foreground="{DynamicResource TextSecondary}" VerticalAlignment="Center" FontSize="11" Margin="0,0,10,0"/>
+                        <ComboBox x:Name="CmbTargetState" Grid.Column="1" Height="28" Style="{StaticResource BulletproofComboBox}" SelectionChanged="CmbTargetState_SelectionChanged">
+                            <ComboBoxItem Content="已改 (Resolved) - 问题已解决待复核" IsSelected="True"/>
+                            <ComboBoxItem Content="已闭环 (Closed) - 复核通过归档"/>
+                            <ComboBoxItem Content="待办 (Pending) - 重新打开或保持待处理"/>
+                            <ComboBoxItem Content="驳回 (Rejected) - 意见存疑或设计驳回"/>
+                        </ComboBox>
+                    </Grid>
+
+                    <!-- 回复人 (使用者) -->
+                    <Grid Margin="0,0,0,8">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Text="回复人 (使用者):" Foreground="{DynamicResource TextSecondary}" VerticalAlignment="Center" FontSize="11" Margin="0,0,10,0"/>
+                        <TextBox x:Name="TxtReplyAuthor" Grid.Column="1" Height="26" VerticalContentAlignment="Center" FontSize="11" Padding="6,2"/>
+                    </Grid>
+
+                    <!-- 回复意见输入 -->
+                    <TextBlock Text="本次流转说明 / 修改回复:" Foreground="{DynamicResource TextSecondary}" FontSize="11" Margin="0,0,0,4"/>
+                    <TextBox x:Name="TxtReplyContent" Height="75" AcceptsReturn="True" TextWrapping="Wrap" VerticalScrollBarVisibility="Auto" FontSize="11" Padding="8,6"/>
+                </StackPanel>
+            </ScrollViewer>
+
+            <!-- 底部操作栏 -->
+            <Border Grid.Row="2" Background="{DynamicResource TitleBarBg}" BorderBrush="{DynamicResource BorderLine}" BorderThickness="0,1,0,0" Padding="14,8" CornerRadius="0,0,10,10">
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                    <Button Content="取消" Width="68" Height="28" Background="{DynamicResource ButtonBg}" Foreground="{DynamicResource TextPrimary}" Margin="0,0,10,0" Click="BtnCancel_Click"/>
+                    <Button Content="提交流转" Width="88" Height="28" Background="{DynamicResource AccentColor}" Foreground="White" FontWeight="Bold" Click="BtnSubmit_Click"/>
+                </StackPanel>
+            </Border>
+        </Grid>
+    </Border>
+</Window>

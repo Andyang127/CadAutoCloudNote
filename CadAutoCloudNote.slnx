@@ -1,0 +1,25 @@
+<Solution>
+  <Configurations>
+    <Platform Name="Any CPU" />
+    <Platform Name="x64" />
+    <Platform Name="x86" />
+  </Configurations>
+  
+  <Folder Name="/src/">
+    <Project Path="src\CadAutoCloudNote.R17\CadAutoCloudNote.R17.csproj" />
+    <Project Path="src\CadAutoCloudNote.R18\CadAutoCloudNote.R18.csproj" />
+    <Project Path="src\CadAutoCloudNote.R19\CadAutoCloudNote.R19.csproj" />
+    <Project Path="src\CadAutoCloudNote.R20\CadAutoCloudNote.R20.csproj" />
+    <Project Path="src\CadAutoCloudNote.R21\CadAutoCloudNote.R21.csproj" />
+    <Project Path="src\CadAutoCloudNote.R22\CadAutoCloudNote.R22.csproj" />
+    <Project Path="src\CadAutoCloudNote.R23\CadAutoCloudNote.R23.csproj" />
+    <Project Path="src\CadAutoCloudNote.R24\CadAutoCloudNote.R24.csproj" />
+    <Project Path="src\CadAutoCloudNote.R25\CadAutoCloudNote.R25.csproj" />
+    <Project Path="src\CadAutoCloudNote.R26\CadAutoCloudNote.R26.csproj" />
+    <Project Path="src\CadAutoCloudNote.R27\CadAutoCloudNote.R27.csproj" />
+  </Folder>
+  <Folder Name="/TEST/">
+    <Project Path="TEST\CadAutoCloudNote.Tests.csproj" />
+  </Folder>
+  <Project Path="CadAutoCloudNote.Core\CadAutoCloudNote.Core.shproj" />
+</Solution>

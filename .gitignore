@@ -1,0 +1,93 @@
+# ====================================================================
+# CAD Auto CloudNote - 100% 极纯源码与文档过滤配置 (.gitignore)
+# 策略：严格禁止任何可执行程序(exe)、动态库(dll)、构建物(build/)入库
+#      仅允许纯源代码、项目配置文件、说明文档与核心矢量图标资源
+# ====================================================================
+
+# 1. 全局二进制可执行程序与系统动态库 (Binaries & Executables)
+*.exe
+*.dll
+*.so
+*.dylib
+*.msi
+*.com
+*.bin
+*.pdb
+*.deps.json
+*.runtimeconfig.json
+
+# 2. 构建产物与发布交付目录 (Build Outputs & Packages)
+[Bb]uild/
+[Bb]in/
+[Oo]bj/
+[Tt]est[Rr]esults/
+packages/
+*.nupkg
+*.nuget.props
+*.nuget.targets
+
+# 3. 本地第三方 SDK 二进制依赖 (External SDK DLLs)
+# 本项目依赖的 AutoCAD SDK 属于 Autodesk® 专有商业库，遵循开源纯净性原则不随源码入库
+Libs/**/*.dll
+
+# 4. AutoCAD 插件部署包中的编译物 (Bundle Binary Outputs)
+CADAutoCloudNote.bundle/Contents/**/*.dll
+CADAutoCloudNote.bundle/Contents/**/*.deps.json
+
+# 5. Visual Studio / VS Code 缓存与用户个人配置
+.vs/
+.vscode/
+*.user
+*.suo
+*.userosv
+*.sln.docstates
+*.DotSettings.user
+*.suo.template
+*.ide/
+*.ncb
+*.opensdf
+*.sdf
+*.cachefile
+
+# 6. AutoCAD / 浩辰 / 中望 绘图运行时临时与锁定文件
+*.dwl
+*.dwl2
+*.ac$
+*.sv$
+*.dcl
+*.bak
+*.bk[0-9]
+*.err
+plot.log
+acad.err
+acad.log
+
+# 7. 运行时日志、内存转储与临时文件夹
+*.log
+*.tmp
+*.temp
+*.dmp
+*.crash
+scratch/
+.system_generated/
+*.swp
+*~
+
+# 8. 测试覆盖率输出 (Coverage)
+coverage/
+*.coverage
+*.coveragexml
+*.trx
+
+# 9. 压缩包与临时打包文件
+*.zip
+*.7z
+*.rar
+*.tar*
+
+# 10. 操作系统杂项文件 (OS Files)
+Thumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+.DS_Store
+._*
